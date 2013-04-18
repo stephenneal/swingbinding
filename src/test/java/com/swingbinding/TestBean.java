@@ -8,8 +8,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.jdesktop.observablecollections.ObservableList;
 
-import com.swingbinding.PropertyChangeSupport2;
-
 public class TestBean {
 
     public static TestBean newInstance() {
@@ -19,6 +17,10 @@ public class TestBean {
     }
 
     private transient PropertyChangeSupport propertyChangeSupport;
+    private boolean enabledPrimitive;
+    private Boolean enabled;
+    private boolean visiblePrimitive;
+    private Boolean visible;
     private Date date;
     private Double duble;
     private Integer integr;
@@ -93,6 +95,46 @@ public class TestBean {
 
     public ObservableList<TestBean> getTestBeansSelected() {
         return this.testBeansSelected;
+    }
+
+    public boolean isEnabledPrimitive() {
+        return this.enabledPrimitive;
+    }
+
+    public void setEnabledPrimitive(boolean newValue) {
+        boolean oldValue = this.enabledPrimitive;
+        this.enabledPrimitive = newValue;
+        getPropertyChangeSupport().firePropertyChange("enabledPrimitive", oldValue, newValue);
+    }
+
+    public Boolean getEnabled() {
+        return this.enabled;
+    }
+
+    public void setEnabled(Boolean newValue) {
+        Boolean oldValue = this.enabled;
+        this.enabled = newValue;
+        getPropertyChangeSupport().firePropertyChange("enabled", oldValue, newValue);
+    }
+
+    public boolean isVisiblePrimitive() {
+        return this.visiblePrimitive;
+    }
+
+    public void setVisiblePrimitive(boolean newValue) {
+        boolean oldValue = this.visiblePrimitive;
+        this.visiblePrimitive = newValue;
+        getPropertyChangeSupport().firePropertyChange("visiblePrimitive", oldValue, newValue);
+    }
+
+    public Boolean getVisible() {
+        return this.visible;
+    }
+
+    public void setVisible(Boolean newValue) {
+        Boolean oldValue = this.visible;
+        this.visible = newValue;
+        getPropertyChangeSupport().firePropertyChange("visible", oldValue, newValue);
     }
 
     public void setTestBeansSelected(ObservableList<TestBean> newValue) {

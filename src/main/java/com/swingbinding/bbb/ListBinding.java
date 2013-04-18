@@ -29,7 +29,7 @@ import org.jdesktop.swingbinding.adapters.JTableAdapterProvider;
  * @author Stephen Neal
  * @since 18/04/2011
  */
-public class ListBindings {
+public class ListBinding {
 
     /**
      * Create a binding of the bean property to the {@link JComboBox}. Refer to

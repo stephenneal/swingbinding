@@ -8,7 +8,7 @@ import org.jdesktop.beansbinding.Property;
 import org.jdesktop.beansbinding.PropertyStateListener;
 
 /**
- * Swing property wraps {@link Property} to ensure values for Swing component properties are set in the EDT.
+ * Swing property wraps {@link BeanProperty} to ensure values for Swing component properties are set in the EDT.
  * 
  * @author Stephen Neal
  * @since 21/04/2011
@@ -60,7 +60,7 @@ class SwingProperty<S, V> extends Property<S, V> {
     /**
      * @throws IllegalArgumentException for empty or {@code null} path.
      */
-    private SwingProperty(Property<S, ?> baseProperty, String path, Class<?> targetType) {
+    protected SwingProperty(Property<S, ?> baseProperty, String path, Class<?> targetType) {
         this.beanProperty = BeanProperty.create(baseProperty, path);
         this.path = path;
         this.targetType = targetType;

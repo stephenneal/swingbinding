@@ -1,9 +1,9 @@
 package com.swingbinding.bbb;
 
-import com.swingbinding.bbb.DateBindings;
+import com.swingbinding.bbb.CustomDateBinding;
 
 /**
- * Tests the functionality of {@link DateBindings}.
+ * Tests the functionality of {@link CustomDateBinding}.
  * <p>
  * This does not test the class in isolation (as per a unit test), it tests with real bindings (BetterBeansBinding).
  * </p>
@@ -11,10 +11,10 @@ import com.swingbinding.bbb.DateBindings;
  * @author Stephen Neal
  * @since 18/07/2011
  */
-public class DateBindingsFunctionalTest {
+public class CustomDateBindingFunctionalTest {
 
     // /**
-    // * Test for {@link DateBindings#date(Object, String, JDateChooser)}. Verifies binding updates correctly in both
+    // * Test for {@link CustomDateBinding#date(Object, String, JDateChooser)}. Verifies binding updates correctly in both
     // * directions.
     // *
     // * @throws InvocationTargetException
@@ -27,7 +27,7 @@ public class DateBindingsFunctionalTest {
     // final JDateChooser dateField = new JDateChooser();
     //
     // // Bind
-    // Binding<TestBean, Date, JDateChooser, Date> binding = DateBindings.date(bean, "date", dateField);
+    // Binding<TestBean, Date, JDateChooser, Date> binding = CustomDateBinding.date(bean, "date", dateField);
     // binding.bind();
     //
     // // Test

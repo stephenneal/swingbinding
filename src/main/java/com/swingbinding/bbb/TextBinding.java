@@ -11,6 +11,7 @@ import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.Converter;
 import org.jdesktop.beansbinding.Property;
 
 /**
@@ -20,22 +21,32 @@ import org.jdesktop.beansbinding.Property;
  * @author Stephen Neal
  * @since 18/04/2011
  */
-public class TextBindings {
+public class TextBinding {
 
     /**
-     * Create a binding of the bean property to the "text" property of a {@link JComponent}, i.e {@link JTextComponent},
-     * {@link JLabel}. Refer to {@link #createBinding(Object, String, JComponent)} for more information about the
-     * binding.
+     * Create a binding of the bean property to the "text" property of a {@link JTextComponent}. Refer to
+     * {@link #createBinding(Object, String, JComponent)} for more information about the binding.
      * 
      * @param bean bean to bind
      * @param propertyName name of the bean property to bind
      * @param component {@link JComponent} to bind (must have a "text" property)
      * @return binding instance
      */
-    public static <B, V> Binding<B, V, JComponent, String> text(B bean, String propertyName, JComponent component) {
-        Binding<B, V, JComponent, String> binding = createBinding(bean, propertyName, component);
-        setConverter(bean, binding);
-        return binding;
+    public static <B, V> Binding<B, V, JComponent, String> text(B bean, String propertyName, JTextComponent component) {
+        return createBinding(bean, propertyName, component);
+    }
+
+    /**
+     * Create a binding of the bean property to the "text" property of a {@link JLabel}. Refer to
+     * {@link #createBinding(Object, String, JComponent)} for more information about the binding.
+     * 
+     * @param bean bean to bind
+     * @param propertyName name of the bean property to bind
+     * @param component {@link JLabel} to bind
+     * @return binding instance
+     */
+    public static <B, V> Binding<B, V, JComponent, String> text(B bean, String propertyName, JLabel component) {
+        return createBinding(bean, propertyName, component);
     }
 
     /**
@@ -51,26 +62,12 @@ public class TextBindings {
      */
     public static <B> Binding<B, Date, JComponent, String> text(B bean, String propertyName, JComponent component,
                     DateFormat format) {
-        Binding<B, Date, JComponent, String> binding = createBinding(bean, propertyName, component);
-        setDateConverter(bean, binding, format);
-        return binding;
+        return createBinding(bean, propertyName, component, format);
     }
 
-    // Set a converter (if required). Often the default conversions provided by BetterBeansBinding are sufficient.
-    @SuppressWarnings("unchecked")
-    private static <B, V> void setConverter(B bean, Binding<B, V, JComponent, String> binding) {
-        Class<?> writeType = binding.getSourceProperty().getWriteType(bean);
-        if (Date.class.isAssignableFrom(writeType)) {
-            setDateConverter(bean, (Binding<B, Date, JComponent, String>) binding, DateFormat.getDateInstance());
-        }
-    }
-
-    // Set a converter (if required). Often the default conversions provided by BetterBeansBinding are sufficient.
-    private static <B> void setDateConverter(B bean, Binding<B, Date, JComponent, String> binding, DateFormat format) {
-        Class<?> writeType = binding.getSourceProperty().getWriteType(bean);
-        if (Date.class.isAssignableFrom(writeType)) {
-            binding.setConverter(Converter2.newDateString(format));
-        }
+    private static <B, V> Binding<B, V, JComponent, String> createBinding(B bean, String propertyName,
+                    JComponent component) {
+        return createBinding(bean, propertyName, component, null);
     }
 
     /**
@@ -97,14 +94,33 @@ public class TextBindings {
      * @return the {@link Binding}
      */
     private static <B, V> Binding<B, V, JComponent, String> createBinding(B bean, String propertyName,
-                    JComponent component) {
+                    JComponent component, DateFormat dateFormat) {
         Property<B, V> bP = BeanProperty.create(propertyName);
         Property<JComponent, String> cP = SwingProperty.create("text", bP.getWriteType(bean));
         UpdateStrategy us = UpdateStrategy.READ_WRITE;
         if (component instanceof JLabel) {
             us = UpdateStrategy.READ;
         }
-        return Bindings.createAutoBinding(us, bean, bP, component, cP);
+        Binding<B, V, JComponent, String> binding = Bindings.createAutoBinding(us, bean, bP, component, cP);
+        setConverter(bean, binding, dateFormat);
+        return binding;
+    }
+
+    /**
+     * Set a converter (if required). Custom converters are require for {@link Date} but for most other types the
+     * default conversions provided by BetterBeansBinding are sufficient. The default conversions can be found in
+     * {@link Converter}.
+     */
+    private static <B, V> void setConverter(B bean, Binding<B, V, JComponent, String> binding, DateFormat dateFormat) {
+        Class<?> writeType = binding.getSourceProperty().getWriteType(bean);
+        if (Date.class.isAssignableFrom(writeType)) {
+            @SuppressWarnings("unchecked")
+            Binding<B, Date, JComponent, String> dB = (Binding<B, Date, JComponent, String>) binding;
+            if (dateFormat == null) {
+                dateFormat = DateFormat.getDateInstance();
+            }
+            dB.setConverter(Converter2.newDateString(dateFormat));
+        }
     }
 
 }

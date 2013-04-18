@@ -12,11 +12,11 @@
  * <p>
  * Binding operations are grouped by the Swing component and type of property to be bound.
  * <ul>
- * <li>{@link com.swingbinding.bbb.TextBindings} is for binding Swing components with a "text" property, most commonly
+ * <li>{@link com.swingbinding.bbb.TextBinding} is for binding Swing components with a "text" property, most commonly
  * a {@link javax.swing.text.JTextComponent} or {@link javax.swing.JLabel}.</li>
- * <li>{@link com.swingbinding.bbb.ListBindings} is for binding Swing components that represent a list including
+ * <li>{@link com.swingbinding.bbb.ListBinding} is for binding Swing components that represent a list including
  * {@link javax.swing.JComboBox}, {@link javax.swing.JList}, {@link javax.swing.JTable}.</li>
- * <li>{@link com.swingbinding.bbb.DateBindings} was created to binding third party Swing components that provide date
+ * <li>{@link com.swingbinding.bbb.CustomDateBinding} was created to binding third party Swing components that provide date
  * specific functionality, i.e. calendars, date pickers etc. It is not currently supported in this project because all
  * the operations are for third party Swing components.</li>
  * </ul>

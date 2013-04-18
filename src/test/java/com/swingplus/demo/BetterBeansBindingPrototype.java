@@ -22,7 +22,7 @@ import org.jdesktop.observablecollections.ObservableList;
 import com.swingbinding.PropertyChangeSupport2;
 import com.swingbinding.bbb.AbstractModel;
 import com.swingbinding.bbb.BindingService;
-import com.swingbinding.bbb.TextBindings;
+import com.swingbinding.bbb.TextBinding;
 
 @SuppressWarnings("serial")
 public class BetterBeansBindingPrototype extends JPanel {
@@ -111,24 +111,24 @@ public class BetterBeansBindingPrototype extends JPanel {
         this.field4Output.setBorder(BorderFactory.createEtchedBorder());
 
         // Bind the Swing components to the model
-        bind(TextBindings.text(model, "field1Label", this.field1Label));
-        bind(TextBindings.text(model, "field2Label", this.field2Label));
-        bind(TextBindings.text(model, "field3Label", this.field3Label));
-        bind(TextBindings.text(model, "field4Label", this.field4Label));
-        bind(TextBindings.text(model, "field1Label", this.field1OutputLabel));
-        bind(TextBindings.text(model, "field2Label", this.field2OutputLabel));
-        bind(TextBindings.text(model, "field3Label", this.field3OutputLabel));
-        bind(TextBindings.text(model, "field4Label", this.field4OutputLabel));
+        bind(TextBinding.text(model, "field1Label", this.field1Label));
+        bind(TextBinding.text(model, "field2Label", this.field2Label));
+        bind(TextBinding.text(model, "field3Label", this.field3Label));
+        bind(TextBinding.text(model, "field4Label", this.field4Label));
+        bind(TextBinding.text(model, "field1Label", this.field1OutputLabel));
+        bind(TextBinding.text(model, "field2Label", this.field2OutputLabel));
+        bind(TextBinding.text(model, "field3Label", this.field3OutputLabel));
+        bind(TextBinding.text(model, "field4Label", this.field4OutputLabel));
 
-        bind(TextBindings.text(model, "string", this.field1));
-        bind(TextBindings.text(model, "duble", this.field2));
-        bind(TextBindings.text(model, "date", this.field3));
-        bind(TextBindings.text(model, "dateTime", this.field4, DateFormat.getDateTimeInstance()));
+        bind(TextBinding.text(model, "string", this.field1));
+        bind(TextBinding.text(model, "duble", this.field2));
+        bind(TextBinding.text(model, "date", this.field3));
+        bind(TextBinding.text(model, "dateTime", this.field4, DateFormat.getDateTimeInstance()));
 
-        bind(TextBindings.text(model, "string", this.field1Output));
-        bind(TextBindings.text(model, "duble", this.field2Output));
-        bind(TextBindings.text(model, "date", this.field3Output));
-        bind(TextBindings.text(model, "dateTime", this.field4Output, DateFormat.getDateTimeInstance()));
+        bind(TextBinding.text(model, "string", this.field1Output));
+        bind(TextBinding.text(model, "duble", this.field2Output));
+        bind(TextBinding.text(model, "date", this.field3Output));
+        bind(TextBinding.text(model, "dateTime", this.field4Output, DateFormat.getDateTimeInstance()));
 
         // Lay the components. For simplicity this just uses box layout, its not pretty. Better Swing layouts
         // include MigLayout and JGoodies FormLayout but that is outside the scope of this prototype.

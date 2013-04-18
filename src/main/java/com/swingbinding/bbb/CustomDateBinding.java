@@ -3,7 +3,7 @@ package com.swingbinding.bbb;
 /**
  * Wraps BetterBeansBinding to provide operations that bind the value of date related Swing components to a date
  * property on a bean. This does not include binding a date to a text component, those can be found in
- * {@link TextBindings}.
+ * {@link TextBinding}.
  * <p>
  * NB. the operations are currently commented out because they are for third party Swing components JCalendar and
  * JDateChooser.
@@ -12,7 +12,7 @@ package com.swingbinding.bbb;
  * @author Stephen Neal
  * @since 20/04/2011
  */
-class DateBindings {
+class CustomDateBinding {
 
     // Dependency on JCalendar required...
     // /**

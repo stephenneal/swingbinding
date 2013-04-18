@@ -29,10 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.swingbinding.TestBean;
-import com.swingbinding.bbb.ListBindings;
+import com.swingbinding.bbb.ListBinding;
 
 /**
- * Tests the functionality of {@link ListBindings}.
+ * Tests the functionality of {@link ListBinding}.
  * <p>
  * This does not test the class in isolation (as per a unit test), it tests with real bindings (BetterBeansBinding).
  * </p>
@@ -40,12 +40,12 @@ import com.swingbinding.bbb.ListBindings;
  * @author Stephen Neal
  * @since 29/07/2011
  */
-public class ListBindingsFunctionalTest {
+public class ListBindingFunctionalTest {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
-     * Test for {@link ListBindings#model(Object, String, javax.swing.JComboBox)}. Verifies binding in both directions.
+     * Test for {@link ListBinding#model(Object, String, javax.swing.JComboBox)}. Verifies binding in both directions.
      * 
      * @throws InvocationTargetException
      * @throws InterruptedException
@@ -63,7 +63,7 @@ public class ListBindingsFunctionalTest {
         bean.setStringList(list);
 
         // Bind
-        JComboBoxBinding<Object, TestBean, JComboBox> binding = ListBindings.model(bean, "stringList", comboBox);
+        JComboBoxBinding<Object, TestBean, JComboBox> binding = ListBinding.model(bean, "stringList", comboBox);
         binding.bind();
 
         // Test
@@ -112,7 +112,7 @@ public class ListBindingsFunctionalTest {
     }
 
 /**
-	 * Test for {@link ListBindings#selection(Object, String, JComboBox). Verifies binding updates correctly in both
+	 * Test for {@link ListBinding#selection(Object, String, JComboBox). Verifies binding updates correctly in both
 	 * directions.
      *
 	 * @throws InvocationTargetException 
@@ -127,7 +127,7 @@ public class ListBindingsFunctionalTest {
         final String value2 = "value2";
 
         // Bind
-        Binding<TestBean, ListModel, Object, ListModel> binding = ListBindings.selection(bean, "string", comboBox);
+        Binding<TestBean, ListModel, Object, ListModel> binding = ListBinding.selection(bean, "string", comboBox);
         binding.bind();
 
         // Test
@@ -176,7 +176,7 @@ public class ListBindingsFunctionalTest {
     }
 
     /**
-     * Test for {@link ListBindings#model(Object, String, javax.swing.JTable)}. Verifies binding in both directions.
+     * Test for {@link ListBinding#model(Object, String, javax.swing.JTable)}. Verifies binding in both directions.
      * 
      * @throws InvocationTargetException
      * @throws InterruptedException
@@ -204,14 +204,14 @@ public class ListBindingsFunctionalTest {
         map.put("string", "String");
         map.put("duble", "Double");
         map.put("date", "Date");
-        JTableBinding<Object, TestBean, JTable> binding = ListBindings.model(bean, "testBeans", table, map);
+        JTableBinding<Object, TestBean, JTable> binding = ListBinding.model(bean, "testBeans", table, map);
         binding.bind();
 
         // Test
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                ListBindingsFunctionalTest.this.logger.info("size = " + list.size());
+                ListBindingFunctionalTest.this.logger.info("size = " + list.size());
                 assertEquals(list.size(), table.getModel().getRowCount());
                 for (int i = 0; i < list.size(); i++) {
                     TestBean entry = list.get(i);
@@ -236,7 +236,7 @@ public class ListBindingsFunctionalTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                ListBindingsFunctionalTest.this.logger.info("size = " + list.size());
+                ListBindingFunctionalTest.this.logger.info("size = " + list.size());
                 assertEquals(list.size(), table.getModel().getRowCount());
                 for (int i = 0; i < list.size(); i++) {
                     TestBean entry = list.get(i);
@@ -256,7 +256,7 @@ public class ListBindingsFunctionalTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                ListBindingsFunctionalTest.this.logger.info("size = " + list.size());
+                ListBindingFunctionalTest.this.logger.info("size = " + list.size());
                 assertEquals(list.size(), table.getModel().getRowCount());
                 for (int i = 0; i < list.size(); i++) {
                     TestBean entry = list.get(i);
@@ -277,13 +277,13 @@ public class ListBindingsFunctionalTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                ListBindingsFunctionalTest.this.logger.info("size = " + list.size());
+                ListBindingFunctionalTest.this.logger.info("size = " + list.size());
                 assertEquals(list.size(), table.getModel().getRowCount());
                 for (int i = 0; i < list.size(); i++) {
                     TestBean entry = list.get(i);
                     assertEquals(entry.getString(), table.getModel().getValueAt(i, 0));
                     assertEquals(entry.getString(), table.getValueAt(i, 0));
-                    ListBindingsFunctionalTest.this.logger.info("duble = " + entry.getDuble());
+                    ListBindingFunctionalTest.this.logger.info("duble = " + entry.getDuble());
                     assertEquals(entry.getDuble(), table.getModel().getValueAt(i, 1));
                     assertEquals(entry.getDuble(), table.getValueAt(i, 1));
                     assertEquals(entry.getDate(), table.getModel().getValueAt(i, 2));
@@ -303,13 +303,13 @@ public class ListBindingsFunctionalTest {
         SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
-                ListBindingsFunctionalTest.this.logger.info("size = " + list.size());
+                ListBindingFunctionalTest.this.logger.info("size = " + list.size());
                 assertEquals(list.size(), table.getModel().getRowCount());
                 for (int i = 0; i < list.size(); i++) {
                     TestBean entry = list.get(i);
                     assertEquals(entry.getString(), table.getModel().getValueAt(i, 0));
                     assertEquals(entry.getString(), table.getValueAt(i, 0));
-                    ListBindingsFunctionalTest.this.logger.info("duble = " + entry.getDuble());
+                    ListBindingFunctionalTest.this.logger.info("duble = " + entry.getDuble());
                     assertEquals(entry.getDuble(), table.getModel().getValueAt(i, 1));
                     assertEquals(entry.getDuble(), table.getValueAt(i, 1));
                     assertEquals(entry.getDate(), table.getModel().getValueAt(i, 2));
@@ -333,7 +333,7 @@ public class ListBindingsFunctionalTest {
     }
 
     /**
-     * Test for {@link ListBindings#selection(Object, String, JTable)}. Verifies binding in both directions.
+     * Test for {@link ListBinding#selection(Object, String, JTable)}. Verifies binding in both directions.
      * 
      * @throws InvocationTargetException
      * @throws InterruptedException
@@ -366,9 +366,9 @@ public class ListBindingsFunctionalTest {
         map.put("string", "String");
         map.put("duble", "Double");
         map.put("date", "Date");
-        JTableBinding<Object, TestBean, JTable> listBinding = ListBindings.model(bean, "testBeans", table, map);
+        JTableBinding<Object, TestBean, JTable> listBinding = ListBinding.model(bean, "testBeans", table, map);
         listBinding.bind();
-        Binding<Object, List<TestBean>, TestBean, List<TestBean>> selectionBinding = ListBindings.selection(bean,
+        Binding<Object, List<TestBean>, TestBean, List<TestBean>> selectionBinding = ListBinding.selection(bean,
                         "testBeansSelected", table);
         selectionBinding.bind();
 
@@ -433,7 +433,7 @@ public class ListBindingsFunctionalTest {
     }
 
     /**
-     * Test for {@link ListBindings#selection(Object, String, JTable)}. Verifies binding in both directions.
+     * Test for {@link ListBinding#selection(Object, String, JTable)}. Verifies binding in both directions.
      * 
      * @throws InvocationTargetException
      * @throws InterruptedException
@@ -466,9 +466,9 @@ public class ListBindingsFunctionalTest {
         map.put("string", "String");
         map.put("duble", "Double");
         map.put("date", "Date");
-        JTableBinding<Object, TestBean, JTable> listBinding = ListBindings.model(bean, "testBeans", table, map);
+        JTableBinding<Object, TestBean, JTable> listBinding = ListBinding.model(bean, "testBeans", table, map);
         listBinding.bind();
-        Binding<Object, List<TestBean>, TestBean, List<TestBean>> selectionBinding = ListBindings.selection(bean,
+        Binding<Object, List<TestBean>, TestBean, List<TestBean>> selectionBinding = ListBinding.selection(bean,
                         "testBeansSelected", table);
         selectionBinding.bind();
 

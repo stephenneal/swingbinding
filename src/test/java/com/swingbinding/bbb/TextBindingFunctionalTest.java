@@ -13,10 +13,10 @@ import org.jdesktop.beansbinding.Binding;
 import org.junit.Test;
 
 import com.swingbinding.TestBean;
-import com.swingbinding.bbb.TextBindings;
+import com.swingbinding.bbb.TextBinding;
 
 /**
- * Tests the functionality of {@link TextBindings}.
+ * Tests the functionality of {@link TextBinding}.
  * <p>
  * This does not test the class in isolation (as per a unit test), it tests with real bindings (BetterBeansBinding).
  * </p>
@@ -24,10 +24,10 @@ import com.swingbinding.bbb.TextBindings;
  * @author Stephen Neal
  * @since 18/07/2011
  */
-public class TextBindingsFunctionalTest {
+public class TextBindingFunctionalTest {
 
     /**
-     * Test {@link TextBindings#text(Object, String, JComponent)} for a {@link JTextField} and property of type
+     * Test {@link TextBinding#text(Object, String, JComponent)} for a {@link JTextField} and property of type
      * {@link String}.
      * 
      * @throws InvocationTargetException
@@ -40,7 +40,7 @@ public class TextBindingsFunctionalTest {
         final JTextField textField = new JTextField();
 
         // Bind
-        Binding<TestBean, String, JComponent, String> binding = TextBindings.text(bean, "string", textField);
+        Binding<TestBean, String, JComponent, String> binding = TextBinding.text(bean, "string", textField);
         binding.bind();
 
         // Test
@@ -88,7 +88,7 @@ public class TextBindingsFunctionalTest {
     }
 
     /**
-     * Test {@link TextBindings#text(Object, String, JComponent)} for a {@link JTextField} and property of type
+     * Test {@link TextBinding#text(Object, String, JComponent)} for a {@link JTextField} and property of type
      * {@link Integer}.
      * 
      * @throws InvocationTargetException
@@ -101,7 +101,7 @@ public class TextBindingsFunctionalTest {
         final JTextField textField = new JTextField();
 
         // Bind
-        Binding<TestBean, String, JComponent, String> binding = TextBindings.text(bean, "integr", textField);
+        Binding<TestBean, String, JComponent, String> binding = TextBinding.text(bean, "integr", textField);
         binding.bind();
 
         // Test
@@ -149,7 +149,7 @@ public class TextBindingsFunctionalTest {
     }
 
     /**
-     * Test {@link TextBindings#text(Object, String, JComponent)} for a {@link JLabel} and property of type
+     * Test {@link TextBinding#text(Object, String, JComponent)} for a {@link JLabel} and property of type
      * {@link String}.
      */
     @Test
@@ -159,7 +159,7 @@ public class TextBindingsFunctionalTest {
         final JLabel label = new JLabel();
 
         // Bind
-        Binding<TestBean, String, JComponent, String> binding = TextBindings.text(bean, "string", label);
+        Binding<TestBean, String, JComponent, String> binding = TextBinding.text(bean, "string", label);
         binding.bind();
 
         // Test
@@ -232,7 +232,7 @@ public class TextBindingsFunctionalTest {
     }
 
     /**
-     * Test {@link TextBindings#text(Object, String, JComponent)} for a {@link JLabel} and property of type
+     * Test {@link TextBinding#text(Object, String, JComponent)} for a {@link JLabel} and property of type
      * {@link Integer}.
      */
     @Test
@@ -242,7 +242,7 @@ public class TextBindingsFunctionalTest {
         final JLabel label = new JLabel();
 
         // Bind
-        Binding<TestBean, Integer, JComponent, String> binding = TextBindings.text(bean, "integr", label);
+        Binding<TestBean, Integer, JComponent, String> binding = TextBinding.text(bean, "integr", label);
         binding.bind();
 
         // Test
