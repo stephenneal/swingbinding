@@ -1,5 +1,5 @@
 swingbinding
-==========
+============
 
 Java Swing binding built on BetterBeansBinding, http://kenai.com/projects/betterbeansbinding/pages/Home).
 BetterBeansBinding is an implementation born from JSR-295 - Beans Binding, http://jcp.org/en/jsr/detail?id=295.

@@ -1,6 +1,7 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 import javax.swing.JComponent;
+import javax.swing.text.JTextComponent;
 
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -16,6 +17,23 @@ import org.jdesktop.beansbinding.Property;
  * @since 18/04/2013
  */
 public class StateBinding {
+
+    /**
+     * Create a binding of a bean property to the editabe property of a {@link JTextComponent}.
+     * <p>
+     * The {@link UpdateStrategy} is {@link UpdateStrategy#READ}, when binding is being used for state the state should
+     * only be updated via the property it is bound to.
+     * </p>
+     * 
+     * @param bean bean to bind
+     * @param propertyName name of the bean property to bind
+     * @param component {@link JTextComponent} to bind
+     * @return binding instance
+     */
+    public static <B> Binding<B, Boolean, JComponent, Boolean> editable(B bean, String propertyName,
+                    JTextComponent component) {
+        return state(bean, propertyName, component, "editable");
+    }
 
     /**
      * Create a binding of a bean property to the enabled property of a {@link JComponent}.

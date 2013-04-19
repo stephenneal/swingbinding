@@ -1,6 +1,6 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
-import com.swingbinding.bbb.CustomDateBinding;
+import com.swing.binding.bbb.CustomDateBinding;
 
 /**
  * Tests the functionality of {@link CustomDateBinding}.

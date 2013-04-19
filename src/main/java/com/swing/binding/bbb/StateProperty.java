@@ -1,4 +1,4 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 /**
  * State property extends {@link SwingProperty} to ensure the value is never {@code null}.

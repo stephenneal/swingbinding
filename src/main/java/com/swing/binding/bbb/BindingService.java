@@ -1,5 +1,7 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,14 +46,20 @@ public class BindingService {
         // Synchronise to prevent binding during or after release
         synchronized (this.lock) {
             if (this.released) {
-                throw new IllegalStateException("adding bindings during or after release is illegal");
+                throw new IllegalStateException("cannot add bindings after the instance is released");
             }
             Object key = binding.getSourceObject();
             List<Binding<?, ?, ?, ?>> value = this.bindingMap.get(key);
             if (value == null) {
                 value = new ArrayList<Binding<?, ?, ?, ?>>(50);
                 value.add(binding);
-                this.bindingMap.put(binding.getSourceObject(), value);
+                this.bindingMap.put(key, value);
+                if (key instanceof AbstractModel) {
+                    final AbstractModel m = (AbstractModel) key;
+                    // Add a listener to refresh bindings whenever property change support is enabled
+                    m.addPropertyChangeListener("propertyChangeSupportDisabled",
+                                    new PropertyChangeSupportDisabledListener(m));
+                }
             } else {
                 value.add(binding);
             }
@@ -68,10 +76,13 @@ public class BindingService {
             if (this.released) {
                 return;
             }
-            for (Entry<Object, List<Binding<?, ?, ?, ?>>> e : this.bindingMap.entrySet()) {
-                BindingService.release(e.getValue());
+            Iterator<Entry<Object, List<Binding<?, ?, ?, ?>>>> itr = this.bindingMap.entrySet().iterator();
+            Entry<Object, List<Binding<?, ?, ?, ?>>> e = null;
+            while (itr.hasNext()) {
+                e = itr.next();
+                BindingService.release(e.getKey(), e.getValue());
+                itr.remove();
             }
-            this.bindingMap.clear();
             this.released = true;
         }
     }
@@ -88,8 +99,29 @@ public class BindingService {
             if (this.released) {
                 return;
             }
-            BindingService.release(this.bindingMap.get(bean));
+            BindingService.release(bean, this.bindingMap.get(bean));
             this.bindingMap.remove(bean);
+        }
+    }
+
+    /**
+     * Release all bindings for a bean instance.
+     */
+    static void release(Object bean, List<Binding<?, ?, ?, ?>> bindings) {
+        if (bean == null) {
+            return;
+        }
+        BindingService.release(bindings);
+        if (bean instanceof AbstractModel) {
+            final AbstractModel m = (AbstractModel) bean;
+            PropertyChangeListener[] listeners = m.getPropertyChangeListeners("propertyChangeSupportDisabled");
+            if (listeners != null) {
+                for (PropertyChangeListener l : listeners) {
+                    if (l instanceof PropertyChangeSupportDisabledListener) {
+                        m.removePropertyChangeListener("propertyChangeSupportDisabled", l);
+                    }
+                }
+            }
         }
     }
 
@@ -126,4 +158,26 @@ public class BindingService {
         }
     }
 
+    private class PropertyChangeSupportDisabledListener implements PropertyChangeListener {
+
+        private AbstractModel bean;
+
+        public PropertyChangeSupportDisabledListener(AbstractModel bean) {
+            super();
+            this.bean = bean;
+        }
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            Boolean enabled = (Boolean) evt.getNewValue();
+            if (enabled != null && enabled.booleanValue()) {
+                List<Binding<?, ?, ?, ?>> bindings = BindingService.this.bindingMap.get(this.bean);
+                if (bindings != null) {
+                    for (Binding<?, ?, ?, ?> b : bindings) {
+                        b.refreshAndNotify();
+                    }
+                }
+            }
+        }
+    }
 }

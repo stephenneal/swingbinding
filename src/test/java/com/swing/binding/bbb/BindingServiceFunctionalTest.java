@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2011 Stephen Neal
  */
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,8 +26,8 @@ import org.jdesktop.swingbinding.SwingBindings;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 
-import com.swingbinding.TestBean;
-import com.swingbinding.bbb.BindingService;
+import com.swing.binding.TestBean;
+import com.swing.binding.bbb.BindingService;
 
 /**
  * Tests the functionality of {@link BindingService}.
@@ -41,7 +41,7 @@ import com.swingbinding.bbb.BindingService;
 public class BindingServiceFunctionalTest {
 
     /**
-     * Test method for {@link com.swingbinding.bbb.BindingService#BindingManager()}.
+     * Test method for {@link com.swing.binding.bbb.BindingService#BindingManager()}.
      */
     @Test
     public void testBindingManager() {
@@ -59,12 +59,12 @@ public class BindingServiceFunctionalTest {
     }
 
     /**
-     * Test method for {@link com.swingbinding.bbb.BindingService#release()}.
+     * Test method for {@link com.swing.binding.bbb.BindingService#release()}.
      */
     @Test
     public void testRelease() {
         BindingService manager = new BindingService();
-        TestBean bean = TestBean.newInstance();
+        TestBean bean = new TestBean();
         Field bindingsField = ReflectionUtils.findField(BindingService.class, "bindingMap");
         ReflectionUtils.makeAccessible(bindingsField);
         @SuppressWarnings("unchecked")
@@ -121,13 +121,13 @@ public class BindingServiceFunctionalTest {
     }
 
     /**
-     * Test method for {@link com.swingbinding.bbb.BindingService#release(java.lang.Object)}.
+     * Test method for {@link com.swing.binding.bbb.BindingService#release(java.lang.Object)}.
      */
     @Test
     public void testReleaseObject() {
         BindingService manager = new BindingService();
-        TestBean bean1 = TestBean.newInstance();
-        TestBean bean2 = TestBean.newInstance();
+        TestBean bean1 = new TestBean();
+        TestBean bean2 = new TestBean();
 
         Field bindingsField = ReflectionUtils.findField(BindingService.class, "bindingMap");
         ReflectionUtils.makeAccessible(bindingsField);
@@ -217,11 +217,11 @@ public class BindingServiceFunctionalTest {
     }
 
     /**
-     * Test method for {@link com.swingbinding.bbb.BindingService#bind(org.jdesktop.beansbinding.Binding)}.
+     * Test method for {@link com.swing.binding.bbb.BindingService#bind(org.jdesktop.beansbinding.Binding)}.
      */
     @Test
     public void testBind() {
-        TestBean bean = TestBean.newInstance();
+        TestBean bean = new TestBean();
         Binding<?, ?, ?, ?> binding = Bindings.createAutoBinding(UpdateStrategy.READ_WRITE, bean,
                         BeanProperty.create("string"), new JTextField(), BeanProperty.create("text"));
         BindingService manager = new BindingService();
@@ -242,11 +242,11 @@ public class BindingServiceFunctionalTest {
     }
 
     /**
-     * Test method for {@link com.swingbinding.bbb.BindingService#release(java.util.List)}.
+     * Test method for {@link com.swing.binding.bbb.BindingService#release(java.util.List)}.
      */
     @Test
     public void testReleaseBindingList() {
-        TestBean bean = TestBean.newInstance();
+        TestBean bean = new TestBean();
         List<Binding<?, ?, ?, ?>> bindings = new ArrayList<Binding<?, ?, ?, ?>>();
 
         int bindingCount = 0;
@@ -285,11 +285,11 @@ public class BindingServiceFunctionalTest {
     }
 
     /**
-     * Test method for {@link com.swingbinding.bbb.BindingService#release(org.jdesktop.beansbinding.Binding)}.
+     * Test method for {@link com.swing.binding.bbb.BindingService#release(org.jdesktop.beansbinding.Binding)}.
      */
     @Test
     public void testReleaseBinding() {
-        TestBean bean = TestBean.newInstance();
+        TestBean bean = new TestBean();
         Binding<?, ?, ?, ?> binding = Bindings.createAutoBinding(UpdateStrategy.READ_WRITE, bean,
                         BeanProperty.create("string"), new JTextField(), BeanProperty.create("text"));
         binding.bind();

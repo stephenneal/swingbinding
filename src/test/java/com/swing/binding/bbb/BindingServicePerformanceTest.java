@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2011 Stephen Neal
  */
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.swingbinding.TestBean;
-import com.swingbinding.bbb.BindingService;
+import com.swing.binding.TestBean;
+import com.swing.binding.bbb.BindingService;
 
 /**
  * Test the performance of {@link BindingService}.
@@ -46,12 +46,12 @@ public class BindingServicePerformanceTest {
 
         List<Binding<?, ?, ?, ?>> bindingsForMap = new ArrayList<Binding<?, ?, ?, ?>>(2000);
         // Create bindings for a number of different bean instances
-        TestBean bean1 = TestBean.newInstance();
+        TestBean bean1 = new TestBean();
         for (int i = 0; i < BEAN_COUNT; i++) {
             if (i == 0) {
                 createBindings(bean1, bindingsForMap, BINDINGS_PER_BEAN);
             } else {
-                createBindings(TestBean.newInstance(), bindingsForMap, BINDINGS_PER_BEAN);
+                createBindings(new TestBean(), bindingsForMap, BINDINGS_PER_BEAN);
             }
         }
 

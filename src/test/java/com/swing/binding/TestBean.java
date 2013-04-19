@@ -1,4 +1,4 @@
-package com.swingbinding;
+package com.swing.binding;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -10,17 +10,9 @@ import org.jdesktop.observablecollections.ObservableList;
 
 public class TestBean {
 
-    public static TestBean newInstance() {
-        TestBean bean = new TestBean();
-        bean.setPropertyChangeSupport(new PropertyChangeSupport2(bean));
-        return bean;
-    }
-
     private transient PropertyChangeSupport propertyChangeSupport;
-    private boolean enabledPrimitive;
-    private Boolean enabled;
-    private boolean visiblePrimitive;
-    private Boolean visible;
+    private boolean statePrimitive;
+    private Boolean state;
     private Date date;
     private Double duble;
     private Integer integr;
@@ -29,8 +21,9 @@ public class TestBean {
     private ObservableList<TestBean> testBeans;
     private ObservableList<TestBean> testBeansSelected;
 
-    private TestBean() {
+    public TestBean() {
         super();
+        this.propertyChangeSupport = new PropertyChangeSupport2(this);
     }
 
     public Date getDate() {
@@ -97,44 +90,24 @@ public class TestBean {
         return this.testBeansSelected;
     }
 
-    public boolean isEnabledPrimitive() {
-        return this.enabledPrimitive;
+    public boolean isStatePrimitive() {
+        return this.statePrimitive;
     }
 
-    public void setEnabledPrimitive(boolean newValue) {
-        boolean oldValue = this.enabledPrimitive;
-        this.enabledPrimitive = newValue;
-        getPropertyChangeSupport().firePropertyChange("enabledPrimitive", oldValue, newValue);
+    public void setStatePrimitive(boolean newValue) {
+        boolean oldValue = this.statePrimitive;
+        this.statePrimitive = newValue;
+        getPropertyChangeSupport().firePropertyChange("statePrimitive", oldValue, newValue);
     }
 
-    public Boolean getEnabled() {
-        return this.enabled;
+    public Boolean getState() {
+        return this.state;
     }
 
-    public void setEnabled(Boolean newValue) {
-        Boolean oldValue = this.enabled;
-        this.enabled = newValue;
-        getPropertyChangeSupport().firePropertyChange("enabled", oldValue, newValue);
-    }
-
-    public boolean isVisiblePrimitive() {
-        return this.visiblePrimitive;
-    }
-
-    public void setVisiblePrimitive(boolean newValue) {
-        boolean oldValue = this.visiblePrimitive;
-        this.visiblePrimitive = newValue;
-        getPropertyChangeSupport().firePropertyChange("visiblePrimitive", oldValue, newValue);
-    }
-
-    public Boolean getVisible() {
-        return this.visible;
-    }
-
-    public void setVisible(Boolean newValue) {
-        Boolean oldValue = this.visible;
-        this.visible = newValue;
-        getPropertyChangeSupport().firePropertyChange("visible", oldValue, newValue);
+    public void setState(Boolean newValue) {
+        Boolean oldValue = this.state;
+        this.state = newValue;
+        getPropertyChangeSupport().firePropertyChange("state", oldValue, newValue);
     }
 
     public void setTestBeansSelected(ObservableList<TestBean> newValue) {
@@ -148,43 +121,34 @@ public class TestBean {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE, false);
     }
 
-    // PropertyChangeSupport delegate methods
-    // -----------------------------------------------------------------------------------------------------------------
-
-    public PropertyChangeSupport getPropertyChangeSupport() {
+    private PropertyChangeSupport getPropertyChangeSupport() {
         return this.propertyChangeSupport;
     }
 
-    public void setPropertyChangeSupport(PropertyChangeSupport propertyChangeSupport) {
-        this.propertyChangeSupport = propertyChangeSupport;
-    }
+    // PropertyChangeSupport delegate methods
+    // -----------------------------------------------------------------------------------------------------------------
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    public PropertyChangeListener[] getPropertyChangeListeners() {
-        return this.propertyChangeSupport.getPropertyChangeListeners();
+        getPropertyChangeSupport().addPropertyChangeListener(listener);
     }
 
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-        this.propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+        getPropertyChangeSupport().addPropertyChangeListener(propertyName, listener);
     }
 
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-        this.propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
+    public PropertyChangeListener[] getPropertyChangeListeners() {
+        return getPropertyChangeSupport().getPropertyChangeListeners();
     }
 
     public PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
-        return this.propertyChangeSupport.getPropertyChangeListeners(propertyName);
+        return getPropertyChangeSupport().getPropertyChangeListeners(propertyName);
     }
 
-    public boolean hasListeners(String propertyName) {
-        return this.propertyChangeSupport.hasListeners(propertyName);
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        getPropertyChangeSupport().removePropertyChangeListener(listener);
     }
 
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        getPropertyChangeSupport().removePropertyChangeListener(propertyName, listener);
+    }
 }

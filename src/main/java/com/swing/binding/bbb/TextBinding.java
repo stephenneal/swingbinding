@@ -1,4 +1,4 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 import java.text.DateFormat;
 import java.util.Date;

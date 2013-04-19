@@ -1,4 +1,4 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 /**
  * Wraps BetterBeansBinding to provide operations that bind the value of date related Swing components to a date

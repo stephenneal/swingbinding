@@ -1,4 +1,4 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -28,8 +28,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.swingbinding.TestBean;
-import com.swingbinding.bbb.ListBinding;
+import com.swing.binding.TestBean;
+import com.swing.binding.bbb.ListBinding;
 
 /**
  * Tests the functionality of {@link ListBinding}.
@@ -53,7 +53,7 @@ public class ListBindingFunctionalTest {
     @Test
     public void testModelComboBox() throws InterruptedException, InvocationTargetException {
         // Setup
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final JComboBox comboBox = new JComboBox();
         // The bean list must be set prior to binding for it to be bound to the list instance
         List<String> l = new ArrayList<String>();
@@ -121,7 +121,7 @@ public class ListBindingFunctionalTest {
     @Test
     public void testSelectionComboBox() throws InterruptedException, InvocationTargetException {
         // Setup
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final JComboBox comboBox = new JComboBox();
         final String value1 = "value1";
         final String value2 = "value2";
@@ -187,10 +187,10 @@ public class ListBindingFunctionalTest {
         final JTable table = new JTable();
         // The bean list must be set prior to binding for it to be bound to the list instance
         final List<TestBean> l = new ArrayList<TestBean>();
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final Date date = Calendar.getInstance().getTime();
         for (int i = 0; i < 3; i++) {
-            final TestBean b = TestBean.newInstance();
+            final TestBean b = new TestBean();
             b.setString("value" + i);
             b.setDate(date);
             b.setDuble(Double.valueOf(i));
@@ -227,7 +227,7 @@ public class ListBindingFunctionalTest {
 
         // Add another entry into the list
         int i = list.size();
-        final TestBean b = TestBean.newInstance();
+        final TestBean b = new TestBean();
         b.setString("value" + i);
         b.setDate(date);
         b.setDuble(Double.valueOf(i));
@@ -345,10 +345,10 @@ public class ListBindingFunctionalTest {
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // The bean list must be set prior to binding for it to be bound to the list instance
         final List<TestBean> l = new ArrayList<TestBean>();
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final Date date = Calendar.getInstance().getTime();
         for (int i = 0; i < 3; i++) {
-            final TestBean b = TestBean.newInstance();
+            final TestBean b = new TestBean();
             b.setString("value" + i);
             b.setDate(date);
             b.setDuble(Double.valueOf(i));
@@ -445,10 +445,10 @@ public class ListBindingFunctionalTest {
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         // The bean list must be set prior to binding for it to be bound to the list instance
         final List<TestBean> l = new ArrayList<TestBean>();
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final Date date = Calendar.getInstance().getTime();
         for (int i = 0; i < 3; i++) {
-            final TestBean b = TestBean.newInstance();
+            final TestBean b = new TestBean();
             b.setString("value" + i);
             b.setDate(date);
             b.setDuble(Double.valueOf(i));

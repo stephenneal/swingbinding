@@ -1,4 +1,4 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,8 +12,8 @@ import javax.swing.SwingUtilities;
 import org.jdesktop.beansbinding.Binding;
 import org.junit.Test;
 
-import com.swingbinding.TestBean;
-import com.swingbinding.bbb.TextBinding;
+import com.swing.binding.TestBean;
+import com.swing.binding.bbb.TextBinding;
 
 /**
  * Tests the functionality of {@link TextBinding}.
@@ -36,7 +36,7 @@ public class TextBindingFunctionalTest {
     @Test
     public void testTextJTextFieldString() throws InterruptedException, InvocationTargetException {
         // Setup
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final JTextField textField = new JTextField();
 
         // Bind
@@ -97,7 +97,7 @@ public class TextBindingFunctionalTest {
     @Test
     public void testTextJTextFieldInteger() throws InterruptedException, InvocationTargetException {
         // Setup
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final JTextField textField = new JTextField();
 
         // Bind
@@ -155,7 +155,7 @@ public class TextBindingFunctionalTest {
     @Test
     public void testBindTextJLabelToString() throws InterruptedException, InvocationTargetException {
         // Setup
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final JLabel label = new JLabel();
 
         // Bind
@@ -238,7 +238,7 @@ public class TextBindingFunctionalTest {
     @Test
     public void testBindTextJLabelToInteger() throws InterruptedException, InvocationTargetException {
         // Setup
-        final TestBean bean = TestBean.newInstance();
+        final TestBean bean = new TestBean();
         final JLabel label = new JLabel();
 
         // Bind

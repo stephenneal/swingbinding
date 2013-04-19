@@ -1,4 +1,4 @@
-package com.swingbinding.bbb;
+package com.swing.binding.bbb;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
