@@ -1,4 +1,4 @@
-package com.swing.binding.bbb;
+package com.swing.binding.bbb.mvc;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -9,12 +9,18 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.jdesktop.beansbinding.Binding;
 
 import com.swing.binding.PropertyChangeSupport2;
+import com.swing.binding.bbb.BindingService;
 
 /**
- * Model classes to be used in binding can extend this to get {@link PropertyChangeSupport} for compatibility with
- * BetterBeansBinding. Implementing classes must be sure to fire {@link PropertyChangeEvent}'s in setter's.
+ * The base class for models that participate in an MVC framework that uses BetterBeansBinding to synchronise the view
+ * and model. The binding requires {@link PropertyChangeSupport}. Implementing classes must be sure to fire
+ * {@link PropertyChangeEvent}'s in setter's (TODO consider having an annotation for this).
  * <p>
- * This also supports temporarily disabling binding via {@link #setPropertyChangeSupportDisabled(boolean)}.
+ * To learn more about the purpose of a presentation model in an MVC framework read Martin Fowler's document
+ * {@link http://martinfowler.com/eaaDev/PresentationModel.html}.
+ * </p>
+ * <p>
+ * This also supports temporarily disabling the binding by invoking {@link #setPropertyChangeSupportDisabled(boolean)}.
  * {@link BindingService} listens for changes to this property and when it is enabled (after having been disabled) it
  * invokes {@link Binding#refreshAndNotify()} on each binding that has this bean as the source.
  * </p>
@@ -22,12 +28,12 @@ import com.swing.binding.PropertyChangeSupport2;
  * @author Stephen Neal
  * @since 10/04/2013
  */
-public class AbstractModel {
+public class PresentationModel {
 
     private transient PropertyChangeSupport propertyChangeSupport;
     private String title;
 
-    protected AbstractModel() {
+    protected PresentationModel() {
         super();
         this.propertyChangeSupport = new PropertyChangeSupport2(this);
     }

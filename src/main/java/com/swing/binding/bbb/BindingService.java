@@ -12,6 +12,8 @@ import java.util.Map.Entry;
 import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingListener;
 
+import com.swing.binding.bbb.mvc.PresentationModel;
+
 /**
  * Manage bindings. Provides a mechanism to release all bindings that are managed by this instance. It is also possible
  * to release bindings for a single source object. Bindings should be released to guard against memory leaks.
@@ -54,8 +56,8 @@ public class BindingService {
                 value = new ArrayList<Binding<?, ?, ?, ?>>(50);
                 value.add(binding);
                 this.bindingMap.put(key, value);
-                if (key instanceof AbstractModel) {
-                    final AbstractModel m = (AbstractModel) key;
+                if (key instanceof PresentationModel) {
+                    final PresentationModel m = (PresentationModel) key;
                     // Add a listener to refresh bindings whenever property change support is enabled
                     m.addPropertyChangeListener("propertyChangeSupportDisabled",
                                     new PropertyChangeSupportDisabledListener(m));
@@ -112,8 +114,8 @@ public class BindingService {
             return;
         }
         BindingService.release(bindings);
-        if (bean instanceof AbstractModel) {
-            final AbstractModel m = (AbstractModel) bean;
+        if (bean instanceof PresentationModel) {
+            final PresentationModel m = (PresentationModel) bean;
             PropertyChangeListener[] listeners = m.getPropertyChangeListeners("propertyChangeSupportDisabled");
             if (listeners != null) {
                 for (PropertyChangeListener l : listeners) {
@@ -160,9 +162,9 @@ public class BindingService {
 
     private class PropertyChangeSupportDisabledListener implements PropertyChangeListener {
 
-        private AbstractModel bean;
+        private PresentationModel bean;
 
-        public PropertyChangeSupportDisabledListener(AbstractModel bean) {
+        public PropertyChangeSupportDisabledListener(PresentationModel bean) {
             super();
             this.bean = bean;
         }

@@ -1,4 +1,4 @@
-package com.swing.binding.bbb;
+package com.swing.binding.bbb.mvc;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -11,8 +11,10 @@ import javax.swing.border.TitledBorder;
 
 import org.jdesktop.beansbinding.Binding;
 
+import com.swing.binding.bbb.BindingService;
+
 @SuppressWarnings("serial")
-public abstract class AbstractPanel<M extends AbstractPanelModel> extends JPanel {
+public abstract class AbstractPanel<M extends PresentationModel> extends JPanel {
 
     private BindingService bindingService;
     private M model;
