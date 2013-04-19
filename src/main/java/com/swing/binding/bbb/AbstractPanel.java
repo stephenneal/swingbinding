@@ -1,11 +1,18 @@
 package com.swing.binding.bbb;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 
 import org.jdesktop.beansbinding.Binding;
 
 @SuppressWarnings("serial")
-public abstract class AbstractPanel<M> extends JPanel {
+public abstract class AbstractPanel<M extends AbstractPanelModel> extends JPanel {
 
     private BindingService bindingService;
     private M model;
@@ -25,6 +32,12 @@ public abstract class AbstractPanel<M> extends JPanel {
         super();
         this.model = model;
         this.bindingService = bindingService;
+        if (model != null) {
+            // TODO replace with binding for title and border
+            TitleListener listener = new TitleListener();
+            getModel().addPropertyChangeListener("title", listener);
+            listener.propertyChange(new PropertyChangeEvent(model, "title", null, model.getTitle()));
+        }
     }
 
     protected void bind(Binding<?, ?, ?, ?> binding) {
@@ -41,4 +54,29 @@ public abstract class AbstractPanel<M> extends JPanel {
         return this.model;
     }
 
+    private class TitleListener implements PropertyChangeListener {
+        @Override
+        public void propertyChange(final PropertyChangeEvent evt) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    Border border = getBorder();
+                    TitledBorder t = null;
+                    if (border instanceof TitledBorder) {
+                        t = (TitledBorder) border;
+                    } else if (border instanceof CompoundBorder) {
+                        CompoundBorder c = (CompoundBorder) border;
+                        if (c.getOutsideBorder() instanceof TitledBorder) {
+                            t = (TitledBorder) c.getOutsideBorder();
+                        } else if (c.getInsideBorder() instanceof TitledBorder) {
+                            t = (TitledBorder) c.getInsideBorder();
+                        }
+                    }
+                    if (t != null) {
+                        t.setTitle((String) evt.getNewValue());
+                    }
+                }
+            });
+        }
+    }
 }

@@ -25,6 +25,7 @@ import com.swing.binding.PropertyChangeSupport2;
 public class AbstractModel {
 
     private transient PropertyChangeSupport propertyChangeSupport;
+    private String title;
 
     protected AbstractModel() {
         super();
@@ -61,6 +62,16 @@ public class AbstractModel {
                 getPropertyChangeSupport().firePropertyChange("propertyChangeSupportDisabled", oldValue, newValue);
             }
         }
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String newValue) {
+        String oldValue = this.title;
+        this.title = newValue;
+        getPropertyChangeSupport().firePropertyChange("title", oldValue, newValue);
     }
 
     @Override
