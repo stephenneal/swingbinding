@@ -6,7 +6,9 @@ import java.beans.PropertyChangeSupport;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Binding;
+import org.jdesktop.beansbinding.Property;
 
 import com.swing.binding.PropertyChangeSupport2;
 import com.swing.binding.bbb.BindingService;
@@ -29,6 +31,23 @@ import com.swing.binding.bbb.BindingService;
  * @since 10/04/2013
  */
 public class PresentationModel {
+
+    // Static
+    // ---------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Defines properties that can be bound on this model.
+     */
+    public static class Properties {
+        public static Property<PresentationModel, String> TITLE = create("title");
+
+        protected static <B extends PresentationModel, V> Property<B, V> create(String name) {
+            return BeanProperty.create(name);
+        }
+    }
+
+    // Instance
+    // ---------------------------------------------------------------------------------------------------------------
 
     private transient PropertyChangeSupport propertyChangeSupport;
     private String title;

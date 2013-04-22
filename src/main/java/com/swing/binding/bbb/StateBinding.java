@@ -4,7 +4,6 @@ import javax.swing.JComponent;
 import javax.swing.text.JTextComponent;
 
 import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
-import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.beansbinding.Property;
@@ -26,13 +25,13 @@ public class StateBinding {
      * </p>
      * 
      * @param bean bean to bind
-     * @param propertyName name of the bean property to bind
+     * @param bP bean property to bind
      * @param component {@link JTextComponent} to bind
      * @return binding instance
      */
-    public static <B> Binding<B, Boolean, JComponent, Boolean> editable(B bean, String propertyName,
+    public static <B> Binding<B, Boolean, JComponent, Boolean> editable(B bean, Property<B, Boolean> bP,
                     JTextComponent component) {
-        return state(bean, propertyName, component, "editable");
+        return state(bean, bP, component, "editable");
     }
 
     /**
@@ -43,13 +42,13 @@ public class StateBinding {
      * </p>
      * 
      * @param bean bean to bind
-     * @param propertyName name of the bean property to bind
+     * @param bP bean property to bind
      * @param component {@link JComponent} to bind
      * @return binding instance
      */
-    public static <B> Binding<B, Boolean, JComponent, Boolean>
-                    enabled(B bean, String propertyName, JComponent component) {
-        return state(bean, propertyName, component, "enabled");
+    public static <B> Binding<B, Boolean, JComponent, Boolean> enabled(B bean, Property<B, Boolean> bP,
+                    JComponent component) {
+        return state(bean, bP, component, "enabled");
     }
 
     /**
@@ -60,13 +59,13 @@ public class StateBinding {
      * </p>
      * 
      * @param bean bean to bind
-     * @param propertyName name of the bean property to bind
+     * @param bP bean property to bind
      * @param component {@link JComponent} to bind
      * @return binding instance
      */
-    public static <B> Binding<B, Boolean, JComponent, Boolean>
-                    visible(B bean, String propertyName, JComponent component) {
-        return state(bean, propertyName, component, "visible");
+    public static <B> Binding<B, Boolean, JComponent, Boolean> visible(B bean, Property<B, Boolean> bP,
+                    JComponent component) {
+        return state(bean, bP, component, "visible");
     }
 
     /**
@@ -77,13 +76,12 @@ public class StateBinding {
      * </p>
      * 
      * @param bean bean to bind
-     * @param propertyName name of the bean property to bind
+     * @param bP bean property to bind
      * @param component {@link JComponent} to bind
      * @return binding instance
      */
-    private static <B> Binding<B, Boolean, JComponent, Boolean> state(B bean, String propertyName,
+    private static <B> Binding<B, Boolean, JComponent, Boolean> state(B bean, Property<B, Boolean> bP,
                     JComponent component, String componentPropertyName) {
-        Property<B, Boolean> bP = BeanProperty.create(propertyName);
         Property<JComponent, Boolean> cP = StateProperty.createState(componentPropertyName);
         return Bindings.createAutoBinding(UpdateStrategy.READ, bean, bP, component, cP);
     }

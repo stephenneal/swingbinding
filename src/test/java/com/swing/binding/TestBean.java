@@ -1,18 +1,30 @@
 package com.swing.binding;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.jdesktop.beansbinding.Property;
 import org.jdesktop.observablecollections.ObservableList;
 
-public class TestBean {
+import com.swing.binding.bbb.mvc.PresentationModel;
 
-    private transient PropertyChangeSupport propertyChangeSupport;
-    private boolean statePrimitive;
-    private Boolean state;
+public class TestBean extends PresentationModel {
+
+    /**
+     * Defines properties that can be bound on this model.
+     */
+    public static class Properties extends PresentationModel.Properties {
+        public static Property<TestBean, Date> DATE = create("date");
+        public static Property<TestBean, Double> DOUBLE = create("duble");
+        public static Property<TestBean, Integer> INTEGER = create("integr");
+        public static Property<TestBean, String> STRING = create("string");
+        public static Property<TestBean, List<String>> STRING_LIST = create("stringList");
+        public static Property<TestBean, List<TestBean>> TEST_BEANS = create("testBeans");
+        public static Property<TestBean, List<TestBean>> TEST_BEANS_SELECTED = create("testBeansSelected");
+    }
+
     private Date date;
     private Double duble;
     private Integer integr;
@@ -21,9 +33,11 @@ public class TestBean {
     private ObservableList<TestBean> testBeans;
     private ObservableList<TestBean> testBeansSelected;
 
+    private boolean statePrimitive;
+    private Boolean state;
+
     public TestBean() {
         super();
-        this.propertyChangeSupport = new PropertyChangeSupport2(this);
     }
 
     public Date getDate() {
@@ -121,34 +135,4 @@ public class TestBean {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE, false);
     }
 
-    private PropertyChangeSupport getPropertyChangeSupport() {
-        return this.propertyChangeSupport;
-    }
-
-    // PropertyChangeSupport delegate methods
-    // -----------------------------------------------------------------------------------------------------------------
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        getPropertyChangeSupport().addPropertyChangeListener(listener);
-    }
-
-    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-        getPropertyChangeSupport().addPropertyChangeListener(propertyName, listener);
-    }
-
-    public PropertyChangeListener[] getPropertyChangeListeners() {
-        return getPropertyChangeSupport().getPropertyChangeListeners();
-    }
-
-    public PropertyChangeListener[] getPropertyChangeListeners(String propertyName) {
-        return getPropertyChangeSupport().getPropertyChangeListeners(propertyName);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        getPropertyChangeSupport().removePropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-        getPropertyChangeSupport().removePropertyChangeListener(propertyName, listener);
-    }
 }

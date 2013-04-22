@@ -1,7 +1,5 @@
 package com.swing.binding.bbb;
 
-import com.swing.binding.bbb.CustomDateBinding;
-
 /**
  * Tests the functionality of {@link CustomDateBinding}.
  * <p>
@@ -14,14 +12,12 @@ import com.swing.binding.bbb.CustomDateBinding;
 public class CustomDateBindingFunctionalTest {
 
     // /**
-    // * Test for {@link CustomDateBinding#date(Object, String, JDateChooser)}. Verifies binding updates correctly in both
+    // * Test for {@link CustomDateBinding#date(Object, String, JDateChooser)}. Verifies binding updates correctly in
+    // both
     // * directions.
-    // *
-    // * @throws InvocationTargetException
-    // * @throws InterruptedException
     // */
     // @Test
-    // public void testDateDateChooser() throws InterruptedException, InvocationTargetException {
+    // public void testDateDateChooser() {
     // // Setup
     // final TestBean bean = TestBean.newInstance();
     // final JDateChooser dateField = new JDateChooser();
@@ -40,7 +36,7 @@ public class CustomDateBindingFunctionalTest {
     // bean.setDate(value);
     // // The following test fails periodically, perhaps there is an issue with the date chooser? For now add a sleep.
     // Thread.sleep(100);
-    // SwingUtilities.invokeAndWait(new Runnable() {
+    // TestUtils.invokeAndWait(new Runnable() {
     // @Override
     // public void run() {
     // assertEquals(value, dateField.getDate());
@@ -48,7 +44,7 @@ public class CustomDateBindingFunctionalTest {
     // });
     // // Clear the date chooser
     // dateField.setDate(null);
-    // SwingUtilities.invokeAndWait(new Runnable() {
+    // TestUtils.invokeAndWait(new Runnable() {
     // @Override
     // public void run() {
     // assertEquals(null, bean.getDate());
@@ -56,7 +52,7 @@ public class CustomDateBindingFunctionalTest {
     // });
     // // Update the date chooser with a value
     // dateField.setDate(value);
-    // SwingUtilities.invokeAndWait(new Runnable() {
+    // TestUtils.invokeAndWait(new Runnable() {
     // @Override
     // public void run() {
     // assertEquals(value, bean.getDate());
@@ -64,7 +60,7 @@ public class CustomDateBindingFunctionalTest {
     // });
     // // Clear the bean value
     // bean.setDate(null);
-    // SwingUtilities.invokeAndWait(new Runnable() {
+    // TestUtils.invokeAndWait(new Runnable() {
     // @Override
     // public void run() {
     // assertEquals(null, dateField.getDate());

@@ -44,12 +44,11 @@ public class ListBinding {
      * @param <B> the type of source object (on which the source property resolves to {@code List})
      * @param bean bean
      * @param elementClass type of elements in the list
-     * @param propertyName name of the property on the bean
+     * @param bP bean property to bind
      * @param component component
      * @return binding instance
      */
-    public static <B, E> JComboBoxBinding<E, B, JComboBox> model(B bean, String propertyName, JComboBox component) {
-        BeanProperty<B, List<E>> bP = BeanProperty.create(propertyName);
+    public static <B, E> JComboBoxBinding<E, B, JComboBox> model(B bean, Property<B, List<E>> bP, JComboBox component) {
         return SwingBindings.createJComboBoxBinding(UpdateStrategy.READ_WRITE, bean, bP, component);
     }
 
@@ -63,15 +62,14 @@ public class ListBinding {
      * 
      * @param bean bean
      * @param elementClass type of elements in the list
-     * @param propertyName name of the property on the bean
+     * @param bP bean property to bind
      * @param component date chooser component
      * @return binding instance
      */
-    public static <B, E> Binding<B, E, Object, E> selection(B bean, String propertyName, JComboBox component) {
+    public static <B, E> Binding<B, E, Object, E> selection(B bean, Property<B, E> bP, JComboBox component) {
         Property<Object, E> cP = SwingProperty.create("selectedItem");
         JComboBoxAdapterProvider adapterProvider = new JComboBoxAdapterProvider();
         Object adapter = adapterProvider.createAdapter(component, "selectedItem");
-        Property<B, E> bP = BeanProperty.create(propertyName);
         return Bindings.createAutoBinding(UpdateStrategy.READ_WRITE, bean, bP, adapter, cP);
     }
 
@@ -85,14 +83,13 @@ public class ListBinding {
      * @param <E> the type of elements in the source {@code List}
      * @param <B> the type of source object (on which the source property resolves to {@code List})
      * @param bean bean
-     * @param propertyName name of the property on the bean
+     * @param bP bean property to bind
      * @param component table component
      * @param columnMap map of the bean property names (keys) to column names (values)
      * @return binding instance
      */
-    public static <B, E> JTableBinding<E, B, JTable> model(B bean, String propertyName, JTable component,
+    public static <B, E> JTableBinding<E, B, JTable> model(B bean, Property<B, List<E>> bP, JTable component,
                     Map<String, String> columnMap) {
-        BeanProperty<B, List<E>> bP = BeanProperty.create(propertyName);
         JTableBinding<E, B, JTable> binding = SwingBindings.createJTableBinding(UpdateStrategy.READ_WRITE, bean, bP,
                         component);
         binding.setEditable(false);
@@ -117,16 +114,17 @@ public class ListBinding {
      * @param <B> the type of source object (on which the source property resolves to {@code List})
      * @param bean bean
      * @param elementClass type of elements in the list
-     * @param propertyName name of the property on the bean
+     * @param bP bean property to bind
      * @param component table component
      * @return binding instance
      */
-    public static <B, E> Binding<Object, List<E>, B, List<E>> selection(B bean, String propertyName, JTable component) {
+    public static <B, E> Binding<Object, List<E>, B, List<E>> selection(B bean, Property<B, List<E>> bP,
+                    JTable component) {
         String tableSelectionFieldName = "selectedElements_IGNORE_ADJUSTING";
         Property<Object, List<E>> cP = BeanProperty.create(tableSelectionFieldName);
         Object adapter = new JTableAdapterProvider().createAdapter(component, tableSelectionFieldName);
-        Property<B, List<E>> bP = BeanProperty.create(propertyName);
-        // Must make the table the source since it only supports read
+        // Must make the table the source since it only supports read.
+        // TODO register a listener on the bean property to set the manually set selected items on the table?
         AutoBinding<Object, List<E>, B, List<E>> binding = Bindings.createAutoBinding(UpdateStrategy.READ, adapter, cP,
                         bean, bP);
         // Provide a converter so that the bean property can be an ObservableList.

@@ -3,7 +3,6 @@ package com.swing.binding.bbb;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,11 +13,10 @@ import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdesktop.beansbinding.BeanProperty;
 import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.observablecollections.ObservableList;
@@ -28,8 +26,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.swing.TestUtils;
 import com.swing.binding.TestBean;
-import com.swing.binding.bbb.ListBinding;
 
 /**
  * Tests the functionality of {@link ListBinding}.
@@ -45,13 +43,11 @@ public class ListBindingFunctionalTest {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
-     * Test for {@link ListBinding#model(Object, String, javax.swing.JComboBox)}. Verifies binding in both directions.
-     * 
-     * @throws InvocationTargetException
-     * @throws InterruptedException
+     * Test for {@link ListBinding#model(Object, org.jdesktop.beansbinding.Property, JComboBox)}. Verifies binding in
+     * both directions.
      */
     @Test
-    public void testModelComboBox() throws InterruptedException, InvocationTargetException {
+    public void testModelComboBox() {
         // Setup
         final TestBean bean = new TestBean();
         final JComboBox comboBox = new JComboBox();
@@ -63,11 +59,12 @@ public class ListBindingFunctionalTest {
         bean.setStringList(list);
 
         // Bind
-        JComboBoxBinding<Object, TestBean, JComboBox> binding = ListBinding.model(bean, "stringList", comboBox);
+        BeanProperty<TestBean, List<String>> bP = BeanProperty.create("stringList");
+        JComboBoxBinding<String, TestBean, JComboBox> binding = ListBinding.model(bean, bP, comboBox);
         binding.bind();
 
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(1, comboBox.getModel().getSize());
@@ -77,7 +74,7 @@ public class ListBindingFunctionalTest {
         });
         final String value2 = "value2";
         bean.getStringList().add(value2);
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(2, comboBox.getModel().getSize());
@@ -88,7 +85,7 @@ public class ListBindingFunctionalTest {
             }
         });
         bean.getStringList().remove(value2);
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(1, comboBox.getModel().getSize());
@@ -99,7 +96,7 @@ public class ListBindingFunctionalTest {
 
         // Changing the combo box model will not update the bean! Do this test last.
         comboBox.setModel(new DefaultComboBoxModel(new String[] { value1 }));
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(1, bean.getStringList().size());
@@ -111,15 +108,12 @@ public class ListBindingFunctionalTest {
         binding.unbind();
     }
 
-/**
-	 * Test for {@link ListBinding#selection(Object, String, JComboBox). Verifies binding updates correctly in both
-	 * directions.
-     *
-	 * @throws InvocationTargetException 
-	 * @throws InterruptedException 
-	 */
+    /**
+     * Test for {@link ListBinding#selection(Object, org.jdesktop.beansbinding.Property, JComboBox). Verifies binding
+     * updates correctly in both directions.
+     */
     @Test
-    public void testSelectionComboBox() throws InterruptedException, InvocationTargetException {
+    public void testSelectionComboBox() {
         // Setup
         final TestBean bean = new TestBean();
         final JComboBox comboBox = new JComboBox();
@@ -127,11 +121,12 @@ public class ListBindingFunctionalTest {
         final String value2 = "value2";
 
         // Bind
-        Binding<TestBean, ListModel, Object, ListModel> binding = ListBinding.selection(bean, "string", comboBox);
+        BeanProperty<TestBean, String> bP = BeanProperty.create("string");
+        Binding<TestBean, String, Object, String> binding = ListBinding.selection(bean, bP, comboBox);
         binding.bind();
 
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(null, comboBox.getSelectedItem());
@@ -139,7 +134,7 @@ public class ListBindingFunctionalTest {
         });
         // Combo box model has no items (no data binding) so setting the selected item does nothing
         comboBox.setSelectedItem(value1);
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(null, comboBox.getSelectedItem());
@@ -149,7 +144,7 @@ public class ListBindingFunctionalTest {
 
         // Manually populate the combo box (not via data binding), defaults selection to the first item.
         comboBox.setModel(new DefaultComboBoxModel(new String[] { value1, value2 }));
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(value1, comboBox.getSelectedItem());
@@ -157,32 +152,30 @@ public class ListBindingFunctionalTest {
             }
         });
         comboBox.setSelectedItem(value2);
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(value2, bean.getString());
             }
         });
         comboBox.setSelectedItem(null);
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(null, bean.getString());
             }
         });
 
-        // Unbind to ensure no error occurs (test will fail if it does)
+        // Unbind to ensure no error occurs
         binding.unbind();
     }
 
     /**
-     * Test for {@link ListBinding#model(Object, String, javax.swing.JTable)}. Verifies binding in both directions.
-     * 
-     * @throws InvocationTargetException
-     * @throws InterruptedException
+     * Test for {@link ListBinding#model(Object, org.jdesktop.beansbinding.Property, JTable, Map)}. Verifies binding in
+     * both directions.
      */
     @Test
-    public void testModelTable() throws InterruptedException, InvocationTargetException {
+    public void testModelTable() {
         // Setup
         final JTable table = new JTable();
         // The bean list must be set prior to binding for it to be bound to the list instance
@@ -204,11 +197,12 @@ public class ListBindingFunctionalTest {
         map.put("string", "String");
         map.put("duble", "Double");
         map.put("date", "Date");
-        JTableBinding<Object, TestBean, JTable> binding = ListBinding.model(bean, "testBeans", table, map);
+        BeanProperty<TestBean, List<TestBean>> bP = BeanProperty.create("testBeans");
+        JTableBinding<TestBean, TestBean, JTable> binding = ListBinding.model(bean, bP, table, map);
         binding.bind();
 
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 ListBindingFunctionalTest.this.logger.info("size = " + list.size());
@@ -233,7 +227,7 @@ public class ListBindingFunctionalTest {
         b.setDuble(Double.valueOf(i));
         list.add(b);
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 ListBindingFunctionalTest.this.logger.info("size = " + list.size());
@@ -253,7 +247,7 @@ public class ListBindingFunctionalTest {
         // Remove an entry from the list
         list.remove(0);
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 ListBindingFunctionalTest.this.logger.info("size = " + list.size());
@@ -274,7 +268,7 @@ public class ListBindingFunctionalTest {
         TestBean change = list.get(0);
         change.setDuble(Double.valueOf(10));
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 ListBindingFunctionalTest.this.logger.info("size = " + list.size());
@@ -293,14 +287,14 @@ public class ListBindingFunctionalTest {
         });
 
         // Change an entry in the table
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 table.setValueAt(Double.valueOf(20), 0, 1);
             }
         });
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 ListBindingFunctionalTest.this.logger.info("size = " + list.size());
@@ -320,7 +314,7 @@ public class ListBindingFunctionalTest {
 
         // Changing the table model updates the bean! Do this test last.
         table.setModel(new DefaultTableModel());
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertNull(bean.getStringList());
@@ -333,13 +327,11 @@ public class ListBindingFunctionalTest {
     }
 
     /**
-     * Test for {@link ListBinding#selection(Object, String, JTable)}. Verifies binding in both directions.
-     * 
-     * @throws InvocationTargetException
-     * @throws InterruptedException
+     * Test for {@link ListBinding#selection(Object, org.jdesktop.beansbinding.Property, JTable)}. Verifies binding in
+     * both directions.
      */
     @Test
-    public void testSingleSelectionTable() throws InterruptedException, InvocationTargetException {
+    public void testSingleSelectionTable() {
         // Setup
         final JTable table = new JTable();
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -366,17 +358,19 @@ public class ListBindingFunctionalTest {
         map.put("string", "String");
         map.put("duble", "Double");
         map.put("date", "Date");
-        JTableBinding<Object, TestBean, JTable> listBinding = ListBinding.model(bean, "testBeans", table, map);
+        BeanProperty<TestBean, List<TestBean>> bP = BeanProperty.create("testBeans");
+        JTableBinding<TestBean, TestBean, JTable> listBinding = ListBinding.model(bean, bP, table, map);
         listBinding.bind();
-        Binding<Object, List<TestBean>, TestBean, List<TestBean>> selectionBinding = ListBinding.selection(bean,
-                        "testBeansSelected", table);
+        BeanProperty<TestBean, List<TestBean>> bP2 = BeanProperty.create("testBeansSelected");
+        Binding<Object, List<TestBean>, TestBean, List<TestBean>> selectionBinding = ListBinding.selection(bean, bP2,
+                        table);
         selectionBinding.bind();
 
         // Table selection binding is currently read-only (restriction of better beans binding). Adding an entry to the
         // selection list will have no effect on the table.
         selected.add(list.get(0));
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(list.size(), table.getModel().getRowCount());
@@ -392,13 +386,13 @@ public class ListBindingFunctionalTest {
         // Select a row in the table
         for (int i = 0; i < list.size(); i++) {
             final Integer select = i;
-            SwingUtilities.invokeAndWait(new Runnable() {
+            TestUtils.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     table.getSelectionModel().setSelectionInterval(select, select);
                 }
             });
-            SwingUtilities.invokeAndWait(new Runnable() {
+            TestUtils.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     // expect selected list contains the selected row
@@ -412,13 +406,13 @@ public class ListBindingFunctionalTest {
         for (int i = 0; i < list.size(); i++) {
             final Integer selectFirst = 0;
             final Integer selectLast = i;
-            SwingUtilities.invokeAndWait(new Runnable() {
+            TestUtils.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     table.getSelectionModel().setSelectionInterval(selectFirst, selectLast);
                 }
             });
-            SwingUtilities.invokeAndWait(new Runnable() {
+            TestUtils.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     // being single selection only the last index should be selected
@@ -433,13 +427,11 @@ public class ListBindingFunctionalTest {
     }
 
     /**
-     * Test for {@link ListBinding#selection(Object, String, JTable)}. Verifies binding in both directions.
-     * 
-     * @throws InvocationTargetException
-     * @throws InterruptedException
+     * Test for {@link ListBinding#selection(Object, org.jdesktop.beansbinding.Property, JTable)}. Verifies binding in
+     * both directions.
      */
     @Test
-    public void testSingleIntervalSelectionTable() throws InterruptedException, InvocationTargetException {
+    public void testSingleIntervalSelectionTable() {
         // Setup
         final JTable table = new JTable();
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -466,17 +458,19 @@ public class ListBindingFunctionalTest {
         map.put("string", "String");
         map.put("duble", "Double");
         map.put("date", "Date");
-        JTableBinding<Object, TestBean, JTable> listBinding = ListBinding.model(bean, "testBeans", table, map);
+        BeanProperty<TestBean, List<TestBean>> bP = BeanProperty.create("testBeans");
+        JTableBinding<TestBean, TestBean, JTable> listBinding = ListBinding.model(bean, bP, table, map);
         listBinding.bind();
-        Binding<Object, List<TestBean>, TestBean, List<TestBean>> selectionBinding = ListBinding.selection(bean,
-                        "testBeansSelected", table);
+        BeanProperty<TestBean, List<TestBean>> bP2 = BeanProperty.create("testBeansSelected");
+        Binding<Object, List<TestBean>, TestBean, List<TestBean>> selectionBinding = ListBinding.selection(bean, bP2,
+                        table);
         selectionBinding.bind();
 
         // Table selection binding is currently read-only (restriction of better beans binding). Adding an entry to the
         // selection list will have no effect on the table.
         selected.add(list.get(0));
         // Test
-        SwingUtilities.invokeAndWait(new Runnable() {
+        TestUtils.invokeAndWait(new Runnable() {
             @Override
             public void run() {
                 assertEquals(list.size(), table.getModel().getRowCount());
@@ -492,13 +486,13 @@ public class ListBindingFunctionalTest {
         // Select a row in the table
         for (int i = 0; i < list.size(); i++) {
             final Integer select = i;
-            SwingUtilities.invokeAndWait(new Runnable() {
+            TestUtils.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     table.getSelectionModel().setSelectionInterval(select, select);
                 }
             });
-            SwingUtilities.invokeAndWait(new Runnable() {
+            TestUtils.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     // expect selected list contains the selected row
@@ -512,13 +506,13 @@ public class ListBindingFunctionalTest {
         for (int i = 0; i < list.size(); i++) {
             final Integer selectFirst = 0;
             final Integer selectLast = i;
-            SwingUtilities.invokeAndWait(new Runnable() {
+            TestUtils.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     table.getSelectionModel().setSelectionInterval(selectFirst, selectLast);
                 }
             });
-            SwingUtilities.invokeAndWait(new Runnable() {
+            TestUtils.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
                     // expect the selected list contains the selected rows

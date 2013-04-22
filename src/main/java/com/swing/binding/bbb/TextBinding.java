@@ -25,15 +25,15 @@ public class TextBinding {
 
     /**
      * Create a binding of the bean property to the "text" property of a {@link JTextComponent}. Refer to
-     * {@link #createBinding(Object, String, JComponent)} for more information about the binding.
+     * {@link #createBinding(Object, BeanProperty, JComponent)} for more information about the binding.
      * 
      * @param bean bean to bind
-     * @param propertyName name of the bean property to bind
+     * @param bP bean property to bind
      * @param component {@link JComponent} to bind (must have a "text" property)
      * @return binding instance
      */
-    public static <B, V> Binding<B, V, JComponent, String> text(B bean, String propertyName, JTextComponent component) {
-        return createBinding(bean, propertyName, component);
+    public static <B, V> Binding<B, V, JComponent, String> text(B bean, Property<B, V> bP, JTextComponent component) {
+        return createBinding(bean, bP, component, null);
     }
 
     /**
@@ -41,12 +41,12 @@ public class TextBinding {
      * {@link #createBinding(Object, String, JComponent)} for more information about the binding.
      * 
      * @param bean bean to bind
-     * @param propertyName name of the bean property to bind
+     * @param bP bean property to bind
      * @param component {@link JLabel} to bind
      * @return binding instance
      */
-    public static <B, V> Binding<B, V, JComponent, String> text(B bean, String propertyName, JLabel component) {
-        return createBinding(bean, propertyName, component);
+    public static <B, V> Binding<B, V, JComponent, String> text(B bean, Property<B, V> bP, JLabel component) {
+        return createBinding(bean, bP, component);
     }
 
     /**
@@ -55,19 +55,19 @@ public class TextBinding {
      * Refer to {@link #createBinding(Object, String, JComponent)} for more information about the binding.
      * 
      * @param bean bean to bind
-     * @param propertyName name of the bean property to bind
+     * @param bP bean property to bind
      * @param component {@link JComponent} to bind (must have a "text" property)
      * @param format date format to convert {@link Date} to/from {@link String}
      * @return binding instance
      */
-    public static <B> Binding<B, Date, JComponent, String> text(B bean, String propertyName, JComponent component,
+    public static <B> Binding<B, Date, JComponent, String> text(B bean, Property<B, Date> bP, JComponent component,
                     DateFormat format) {
-        return createBinding(bean, propertyName, component, format);
+        return createBinding(bean, bP, component, format);
     }
 
-    private static <B, V> Binding<B, V, JComponent, String> createBinding(B bean, String propertyName,
+    private static <B, V> Binding<B, V, JComponent, String> createBinding(B bean, Property<B, V> bP,
                     JComponent component) {
-        return createBinding(bean, propertyName, component, null);
+        return createBinding(bean, bP, component, null);
     }
 
     /**
@@ -89,13 +89,12 @@ public class TextBinding {
      * </p>
      * 
      * @param bean bean to bind
-     * @param propertyName name of the bean property to bind
+     * @param bP bean property to bind
      * @param component {@link JComponent} to bind (must have a "text" property)
      * @return the {@link Binding}
      */
-    private static <B, V> Binding<B, V, JComponent, String> createBinding(B bean, String propertyName,
+    private static <B, V> Binding<B, V, JComponent, String> createBinding(B bean, Property<B, V> bP,
                     JComponent component, DateFormat dateFormat) {
-        Property<B, V> bP = BeanProperty.create(propertyName);
         Property<JComponent, String> cP = SwingProperty.create("text", bP.getWriteType(bean));
         UpdateStrategy us = UpdateStrategy.READ_WRITE;
         if (component instanceof JLabel) {
