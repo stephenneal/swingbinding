@@ -2,6 +2,8 @@ package com.swing.binding.bbb.mvc;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -42,14 +44,23 @@ public abstract class AbstractPanel<M extends PresentationModel> extends JPanel 
         }
     }
 
-    protected void bind(Binding<?, ?, ?, ?> binding) {
+    protected void bind(Binding<?, ?, ?, ?>... bindings) {
+        if (bindings == null) {
+            return;
+        }
+        bind(Arrays.asList(bindings));
+    }
+
+    protected void bind(List<Binding<?, ?, ?, ?>> bindings) {
+        if (bindings == null) {
+            return;
+        }
         if (this.bindingService == null) {
             throw new UnsupportedOperationException("binding not supported, no binding service");
         }
-        if (binding == null) {
-            return;
+        for (Binding<?, ?, ?, ?> b : bindings) {
+            this.bindingService.bind(b);
         }
-        this.bindingService.bind(binding);
     }
 
     public M getModel() {

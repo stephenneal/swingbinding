@@ -1,5 +1,6 @@
 package com.swing.binding.bbb;
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.text.JTextComponent;
 
@@ -31,6 +32,23 @@ public class StateBinding {
      */
     public static <B> Binding<B, Boolean, JComponent, Boolean> editable(B bean, Property<B, Boolean> bP,
                     JTextComponent component) {
+        return state(bean, bP, component, "editable");
+    }
+
+    /**
+     * Create a binding of a bean property to the editabe property of a {@link JComboBox}.
+     * <p>
+     * The {@link UpdateStrategy} is {@link UpdateStrategy#READ}, when binding is being used for state the state should
+     * only be updated via the property it is bound to.
+     * </p>
+     * 
+     * @param bean bean to bind
+     * @param bP bean property to bind
+     * @param component {@link JComboBox} to bind
+     * @return binding instance
+     */
+    public static <B> Binding<B, Boolean, JComponent, Boolean> editable(B bean, Property<B, Boolean> bP,
+                    JComboBox component) {
         return state(bean, bP, component, "editable");
     }
 
