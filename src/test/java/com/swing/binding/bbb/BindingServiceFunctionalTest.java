@@ -8,7 +8,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +23,9 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.swingbinding.SwingBindings;
 import org.junit.Test;
-import org.springframework.util.ReflectionUtils;
 
+import com.swing.TestUtils;
 import com.swing.binding.TestBean;
-import com.swing.binding.bbb.BindingService;
 
 /**
  * Tests the functionality of {@link BindingService}.
@@ -46,15 +44,10 @@ public class BindingServiceFunctionalTest {
     @Test
     public void testBindingManager() {
         BindingService manager = new BindingService();
-        Field bindingsField = ReflectionUtils.findField(BindingService.class, "bindingMap");
-        ReflectionUtils.makeAccessible(bindingsField);
         @SuppressWarnings("unchecked")
-        Map<Object, List<Binding<?, ?, ?, ?>>> managerMap = (Map<Object, List<Binding<?, ?, ?, ?>>>) ReflectionUtils
-                        .getField(bindingsField, manager);
+        Map<Object, List<Binding<?, ?, ?, ?>>> managerMap = (Map<Object, List<Binding<?, ?, ?, ?>>>) TestUtils.getInternalState(manager, "bindingMap");
         assertNotNull(managerMap);
-        Field releasedField = ReflectionUtils.findField(BindingService.class, "released");
-        ReflectionUtils.makeAccessible(releasedField);
-        Boolean released = (Boolean) ReflectionUtils.getField(releasedField, manager);
+        Boolean released = (Boolean) TestUtils.getInternalState(manager, "released");
         assertFalse(released);
     }
 
@@ -65,11 +58,8 @@ public class BindingServiceFunctionalTest {
     public void testRelease() {
         BindingService manager = new BindingService();
         TestBean bean = new TestBean();
-        Field bindingsField = ReflectionUtils.findField(BindingService.class, "bindingMap");
-        ReflectionUtils.makeAccessible(bindingsField);
         @SuppressWarnings("unchecked")
-        Map<Object, List<Binding<?, ?, ?, ?>>> managerMap = (Map<Object, List<Binding<?, ?, ?, ?>>>) ReflectionUtils
-                        .getField(bindingsField, manager);
+        Map<Object, List<Binding<?, ?, ?, ?>>> managerMap = (Map<Object, List<Binding<?, ?, ?, ?>>>) TestUtils.getInternalState(manager, "bindingMap");
         List<Binding<?, ?, ?, ?>> localList = new ArrayList<Binding<?, ?, ?, ?>>();
         List<Binding<?, ?, ?, ?>> managerList = new ArrayList<Binding<?, ?, ?, ?>>();
 
@@ -100,15 +90,13 @@ public class BindingServiceFunctionalTest {
             assertTrue(b.isBound());
         }
 
-        Field releasedField = ReflectionUtils.findField(BindingService.class, "released");
-        ReflectionUtils.makeAccessible(releasedField);
-        Boolean released = (Boolean) ReflectionUtils.getField(releasedField, manager);
+        Boolean released = (Boolean) TestUtils.getInternalState(manager, "released");
         assertFalse(released);
 
         manager.release();
 
         // Assert released flag
-        released = (Boolean) ReflectionUtils.getField(releasedField, manager);
+        released = (Boolean) TestUtils.getInternalState(manager, "released");
         assertTrue(released);
 
         // Assert bindings released (do not use the manager list instance, it will be empty giving a false positive)
@@ -129,11 +117,8 @@ public class BindingServiceFunctionalTest {
         TestBean bean1 = new TestBean();
         TestBean bean2 = new TestBean();
 
-        Field bindingsField = ReflectionUtils.findField(BindingService.class, "bindingMap");
-        ReflectionUtils.makeAccessible(bindingsField);
         @SuppressWarnings("unchecked")
-        Map<Object, List<Binding<?, ?, ?, ?>>> managerMap = (Map<Object, List<Binding<?, ?, ?, ?>>>) ReflectionUtils
-                        .getField(bindingsField, manager);
+        Map<Object, List<Binding<?, ?, ?, ?>>> managerMap = (Map<Object, List<Binding<?, ?, ?, ?>>>) TestUtils.getInternalState(manager, "bindingMap");
         List<Binding<?, ?, ?, ?>> localList = new ArrayList<Binding<?, ?, ?, ?>>();
         List<Binding<?, ?, ?, ?>> managerListBean1 = new ArrayList<Binding<?, ?, ?, ?>>();
         List<Binding<?, ?, ?, ?>> managerListBean2 = new ArrayList<Binding<?, ?, ?, ?>>();
@@ -184,15 +169,13 @@ public class BindingServiceFunctionalTest {
             assertTrue(b.isBound());
         }
 
-        Field releasedField = ReflectionUtils.findField(BindingService.class, "released");
-        ReflectionUtils.makeAccessible(releasedField);
-        Boolean released = (Boolean) ReflectionUtils.getField(releasedField, manager);
+        Boolean released = (Boolean) TestUtils.getInternalState(manager, "released");
         assertFalse(released);
 
         manager.release(bean1);
 
         // Assert released flag (manager should not be released)
-        released = (Boolean) ReflectionUtils.getField(releasedField, manager);
+        released = (Boolean) TestUtils.getInternalState(manager, "released");
         assertFalse(released);
 
         // Assert 1 bean is registered (first bean should have been removed
@@ -228,11 +211,8 @@ public class BindingServiceFunctionalTest {
         manager.bind(binding);
         assertTrue(binding.isBound());
 
-        Field bindingsField = ReflectionUtils.findField(BindingService.class, "bindingMap");
-        ReflectionUtils.makeAccessible(bindingsField);
         @SuppressWarnings("unchecked")
-        Map<Object, List<Binding<?, ?, ?, ?>>> managerMap = (Map<Object, List<Binding<?, ?, ?, ?>>>) ReflectionUtils
-                        .getField(bindingsField, manager);
+        Map<Object, List<Binding<?, ?, ?, ?>>> managerMap = (Map<Object, List<Binding<?, ?, ?, ?>>>) TestUtils.getInternalState(manager, "bindingMap");
         List<Binding<?, ?, ?, ?>> managerList = managerMap.get(bean);
 
         assertTrue(managerList.contains(binding));
