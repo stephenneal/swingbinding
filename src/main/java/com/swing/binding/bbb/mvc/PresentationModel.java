@@ -134,4 +134,19 @@ public class PresentationModel {
     public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         this.propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
     }
+
+    // PropertyChangeSupport delegate added for convenience
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+        propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    public void firePropertyChange(String propertyName, int oldValue, int newValue) {
+        propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+        propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+    }
 }
