@@ -138,15 +138,15 @@ public class PresentationModel {
     // PropertyChangeSupport delegate added for convenience
     // -----------------------------------------------------------------------------------------------------------------
 
-    public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
-    public void firePropertyChange(String propertyName, int oldValue, int newValue) {
+    protected void firePropertyChange(String propertyName, int oldValue, int newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
-    public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+    protected void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 }
