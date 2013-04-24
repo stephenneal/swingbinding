@@ -1,6 +1,5 @@
 package com.swing.binding.bbb;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +10,8 @@ import java.util.Map.Entry;
 
 import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingListener;
+import org.jdesktop.beansbinding.PropertyStateEvent;
+import org.jdesktop.beansbinding.PropertyStateListener;
 
 import com.swing.binding.bbb.mvc.PresentationModel;
 
@@ -57,10 +58,8 @@ public class BindingService {
                 value.add(binding);
                 this.bindingMap.put(key, value);
                 if (key instanceof PresentationModel) {
-                    final PresentationModel m = (PresentationModel) key;
                     // Add a listener to refresh bindings whenever property change support is enabled
-                    m.addPropertyChangeListener("propertyChangeSupportDisabled",
-                                    new PropertyChangeSupportDisabledListener(m));
+                    PresentationModel.Properties.PROPERTY_CHANGE_SUPPORT_ENABLED.addPropertyStateListener((PresentationModel) key, new PropertyChangeSupportDisabledListener());
                 }
             } else {
                 value.add(binding);
@@ -160,20 +159,13 @@ public class BindingService {
         }
     }
 
-    private class PropertyChangeSupportDisabledListener implements PropertyChangeListener {
-
-        private PresentationModel bean;
-
-        public PropertyChangeSupportDisabledListener(PresentationModel bean) {
-            super();
-            this.bean = bean;
-        }
+    private class PropertyChangeSupportDisabledListener implements PropertyStateListener {
 
         @Override
-        public void propertyChange(PropertyChangeEvent evt) {
+        public void propertyStateChanged(PropertyStateEvent evt) {
             Boolean enabled = (Boolean) evt.getNewValue();
             if (enabled != null && enabled.booleanValue()) {
-                List<Binding<?, ?, ?, ?>> bindings = BindingService.this.bindingMap.get(this.bean);
+                List<Binding<?, ?, ?, ?>> bindings = BindingService.this.bindingMap.get(evt.getSource());
                 if (bindings != null) {
                     for (Binding<?, ?, ?, ?> b : bindings) {
                         b.refreshAndNotify();
@@ -181,5 +173,6 @@ public class BindingService {
                 }
             }
         }
+
     }
 }

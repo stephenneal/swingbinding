@@ -40,6 +40,7 @@ public class PresentationModel {
      */
     public static class Properties {
         public static Property<PresentationModel, String> TITLE = create("title");
+        public static Property<PresentationModel, String> PROPERTY_CHANGE_SUPPORT_ENABLED = create("propertyChangeSupportEnabled");
 
         protected static <B extends PresentationModel, V> Property<B, V> create(String name) {
             return BeanProperty.create(name);
@@ -50,11 +51,14 @@ public class PresentationModel {
     // ---------------------------------------------------------------------------------------------------------------
 
     private transient PropertyChangeSupport propertyChangeSupport;
+    private boolean propertyChangeSupportEnabled;
     private String title;
 
     protected PresentationModel() {
         super();
-        this.propertyChangeSupport = new PropertyChangeSupport2(this);
+        PropertyChangeSupport2 pcs = new PropertyChangeSupport2(this);
+        this.propertyChangeSupportEnabled = pcs.isEnabled();
+        this.propertyChangeSupport = pcs;
     }
 
     /**
@@ -62,30 +66,27 @@ public class PresentationModel {
      * 
      * @return the value of {@code disabled}.
      */
-    public final boolean isPropertyChangeSupportDisabled() {
-        if (!(this.propertyChangeSupport instanceof PropertyChangeSupport2)) {
-            throw new UnsupportedOperationException("propertyChangeSupport does not support enabling/disabling");
-        }
-        return ((PropertyChangeSupport2) this.propertyChangeSupport).isDisabled();
+    public final boolean isPropertyChangeSupportEnabled() {
+        return this.propertyChangeSupportEnabled;
     }
 
     /**
-     * Set the value of {@code disabled}. If it is {@code true} property change events will fire.
+     * Set the value of {@code propertyChangeSupportEnabled}. If it is {@code true} property change events will fire.
      * 
-     * @param disabled {@code true} to disable firing property change events otherwise {@code true}.
+     * @param newValue
+     *            {@code true} to fire property change events otherwise {@code false}.
      */
-    public final void setPropertyChangeSupportDisabled(boolean newValue) {
+    public final void setPropertyChangeSupportEnabled(boolean newValue) {
         if (!(this.propertyChangeSupport instanceof PropertyChangeSupport2)) {
             throw new UnsupportedOperationException("propertyChangeSupport does not support enabling/disabling");
         }
         synchronized (this) {
             PropertyChangeSupport2 pcs2 = (PropertyChangeSupport2) this.propertyChangeSupport;
-            boolean oldValue = pcs2.isDisabled();
-            pcs2.setDisabled(newValue);
-            // Whenever it is re-enabled, notify any listeners
-            if (newValue) {
-                getPropertyChangeSupport().firePropertyChange("propertyChangeSupportDisabled", oldValue, newValue);
-            }
+            boolean oldValue = pcs2.isEnabled();
+            this.propertyChangeSupportEnabled = newValue;
+            getPropertyChangeSupport().firePropertyChange("propertyChangeSupportEnabled", oldValue, newValue);
+            // Update the property change support AFTER firing the event or an event will not fire when it is disabled
+            pcs2.setEnabled(newValue);
         }
     }
 
@@ -138,15 +139,15 @@ public class PresentationModel {
     // PropertyChangeSupport delegate added for convenience
     // -----------------------------------------------------------------------------------------------------------------
 
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+    public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
-    protected void firePropertyChange(String propertyName, int oldValue, int newValue) {
+    public void firePropertyChange(String propertyName, int oldValue, int newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
-    protected void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+    public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 }
