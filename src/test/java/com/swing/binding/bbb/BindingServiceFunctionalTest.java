@@ -24,7 +24,7 @@ import org.jdesktop.beansbinding.Bindings;
 import org.jdesktop.swingbinding.SwingBindings;
 import org.junit.Test;
 
-import com.swing.TestUtils;
+import com.swing.test.TestUtils;
 import com.swing.binding.TestBean;
 
 /**

@@ -12,14 +12,15 @@
  * <p>
  * Binding operations are grouped by the Swing component and type of property to be bound.
  * <ul>
- * <li>{@link com.swing.binding.bbb.TextBinding} is for binding Swing components with a "text" property, most commonly
- * a {@link javax.swing.text.JTextComponent} or {@link javax.swing.JLabel}.</li>
+ * <li>{@link com.swing.binding.bbb.TextBinding} is for binding Swing components with a "text" property, most commonly a
+ * {@link javax.swing.text.JTextComponent} or {@link javax.swing.JLabel}.</li>
  * <li>{@link com.swing.binding.bbb.ListBinding} is for binding Swing components that represent a list including
  * {@link javax.swing.JComboBox}, {@link javax.swing.JList}, {@link javax.swing.JTable}.</li>
- * <li>{@link com.swing.binding.bbb.CustomDateBinding} was created to binding third party Swing components that provide date
- * specific functionality, i.e. calendars, date pickers etc. It is not currently supported in this project because all
- * the operations are for third party Swing components.</li>
  * </ul>
+ * </p>
+ * <p>
+ * A second project, {@code swingbindingextra} provides binding for some third party Swing components such as binding
+ * for the Toedter date components.
  * </p>
  * <p>
  * To read more about BetterBeansBinding go here: {@link http://kenai.com/projects/betterbeansbinding/pages/Home).

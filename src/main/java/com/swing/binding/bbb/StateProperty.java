@@ -1,7 +1,8 @@
 package com.swing.binding.bbb;
 
 /**
- * State property extends {@link SwingProperty} to ensure the value is never {@code null}.
+ * State property extends {@link SwingProperty} to encapsulate a {@link Boolean} property that supports both primitive
+ * and non-primitive ensuring the value is never {@code null}.
  * 
  * @author Stephen Neal
  * @since 18/04/2013

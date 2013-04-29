@@ -12,7 +12,7 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.Property;
 import org.junit.Test;
 
-import com.swing.TestUtils;
+import com.swing.test.TestUtils;
 import com.swing.binding.TestBean;
 
 /**

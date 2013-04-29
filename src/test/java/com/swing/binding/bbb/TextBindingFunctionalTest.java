@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import org.jdesktop.beansbinding.Binding;
 import org.junit.Test;
 
-import com.swing.TestUtils;
+import com.swing.test.TestUtils;
 import com.swing.binding.TestBean;
 import com.swing.binding.TestBean.Properties;
 
