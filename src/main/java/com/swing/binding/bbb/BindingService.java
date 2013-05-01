@@ -1,6 +1,5 @@
 package com.swing.binding.bbb;
 
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,12 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.BindingListener;
-import org.jdesktop.beansbinding.PropertyStateEvent;
-import org.jdesktop.beansbinding.PropertyStateListener;
-
-import com.swing.binding.bbb.mvc.PresentationModel;
 
 /**
  * Manage bindings. Provides a mechanism to release all bindings that are managed by this instance. It is also possible
@@ -24,9 +20,9 @@ import com.swing.binding.bbb.mvc.PresentationModel;
  */
 public class BindingService {
 
+    private static final Logger LOGGER = Logger.getLogger(BindingService.class);
     private Map<Object, List<Binding<?, ?, ?, ?>>> bindingMap;
     private boolean released;
-    private final Object lock = new Object();
 
     /**
      * Default constructor.
@@ -47,7 +43,7 @@ public class BindingService {
             return;
         }
         // Synchronise to prevent binding during or after release
-        synchronized (this.lock) {
+        synchronized (this) {
             if (this.released) {
                 throw new IllegalStateException("cannot add bindings after the instance is released");
             }
@@ -57,10 +53,6 @@ public class BindingService {
                 value = new ArrayList<Binding<?, ?, ?, ?>>(50);
                 value.add(binding);
                 this.bindingMap.put(key, value);
-                if (key instanceof PresentationModel) {
-                    // Add a listener to refresh bindings whenever property change support is enabled
-                    PresentationModel.Properties.PROPERTY_CHANGE_SUPPORT_ENABLED.addPropertyStateListener((PresentationModel) key, new PropertyChangeSupportDisabledListener());
-                }
             } else {
                 value.add(binding);
             }
@@ -73,10 +65,11 @@ public class BindingService {
      */
     public void release() {
         // Synchronise to prevent binding during or after release
-        synchronized (this.lock) {
+        synchronized (this) {
             if (this.released) {
                 return;
             }
+            LOGGER.debug("releasing binding service");
             Iterator<Entry<Object, List<Binding<?, ?, ?, ?>>>> itr = this.bindingMap.entrySet().iterator();
             Entry<Object, List<Binding<?, ?, ?, ?>>> e = null;
             while (itr.hasNext()) {
@@ -96,10 +89,11 @@ public class BindingService {
             return;
         }
         // Synchronise to prevent binding during this release
-        synchronized (this.lock) {
+        synchronized (this) {
             if (this.released) {
                 return;
             }
+            LOGGER.debug("releasing bean: " + bean);
             BindingService.release(bean, this.bindingMap.get(bean));
             this.bindingMap.remove(bean);
         }
@@ -113,17 +107,6 @@ public class BindingService {
             return;
         }
         BindingService.release(bindings);
-        if (bean instanceof PresentationModel) {
-            final PresentationModel m = (PresentationModel) bean;
-            PropertyChangeListener[] listeners = m.getPropertyChangeListeners("propertyChangeSupportDisabled");
-            if (listeners != null) {
-                for (PropertyChangeListener l : listeners) {
-                    if (l instanceof PropertyChangeSupportDisabledListener) {
-                        m.removePropertyChangeListener("propertyChangeSupportDisabled", l);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -159,20 +142,4 @@ public class BindingService {
         }
     }
 
-    private class PropertyChangeSupportDisabledListener implements PropertyStateListener {
-
-        @Override
-        public void propertyStateChanged(PropertyStateEvent evt) {
-            Boolean enabled = (Boolean) evt.getNewValue();
-            if (enabled != null && enabled.booleanValue()) {
-                List<Binding<?, ?, ?, ?>> bindings = BindingService.this.bindingMap.get(evt.getSource());
-                if (bindings != null) {
-                    for (Binding<?, ?, ?, ?> b : bindings) {
-                        b.refreshAndNotify();
-                    }
-                }
-            }
-        }
-
-    }
 }
