@@ -12,13 +12,14 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.Property;
 import org.junit.Test;
 
-import com.swing.test.TestUtils;
 import com.swing.binding.TestBean;
+import com.swing.test.TestUtils;
 
 /**
  * Tests the functionality of {@link StateBinding}.
  * <p>
- * This does not test the class in isolation (as per a unit test), it tests with real bindings (BetterBeansBinding).
+ * This does not test the class in isolation (as per a unit test), it tests with
+ * real bindings (BetterBeansBinding).
  * </p>
  * 
  * @author Stephen Neal
@@ -27,8 +28,9 @@ import com.swing.binding.TestBean;
 public class StateBindingFunctionalTest {
 
     /**
-     * Test {@link StateBinding#editable(Object, Property, JTextComponent)} for a {@link JTextField} where the bean
-     * property is a non-primitive {@link Boolean}.
+     * Test {@link StateBinding#editable(Object, Property, JTextComponent)} for
+     * a {@link JTextField} where the bean property is a non-primitive
+     * {@link Boolean}.
      */
     @Test
     public void testEditableJTextField() {
@@ -38,7 +40,7 @@ public class StateBindingFunctionalTest {
 
         // Bind
         Property<TestBean, Boolean> bP = BeanProperty.create("state");
-        Binding<TestBean, Boolean, JComponent, Boolean> binding = StateBinding.editable(bean, bP, textField);
+        Binding<TestBean, Boolean, JTextComponent, Boolean> binding = StateBinding.editable(bean, bP, textField);
         binding.bind();
 
         // Test
@@ -58,7 +60,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, textField.isEditable());
             }
         });
-        // Reverse the state via the component (binding is read only so bean should not be updated)
+        // Reverse the state via the component (binding is read only so bean
+        // should not be updated)
         textField.setEditable(false);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -66,7 +69,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(Boolean.TRUE, bean.getState());
             }
         });
-        // Set the same value on the bean property, the component will not be updated (same value means no property
+        // Set the same value on the bean property, the component will not be
+        // updated (same value means no property
         // change)
         bean.setState(false);
         TestUtils.invokeAndWait(new Runnable() {
@@ -91,7 +95,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(false, textField.isEditable());
             }
         });
-        // Update the component with a value (binding is read only so bean should not be updated)
+        // Update the component with a value (binding is read only so bean
+        // should not be updated)
         textField.setEditable(true);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -105,8 +110,8 @@ public class StateBindingFunctionalTest {
     }
 
     /**
-     * Test {@link StateBinding#editable(Object, Property, JTextComponent)} for a {@link JTextField} where the bean
-     * property is a primitive.
+     * Test {@link StateBinding#editable(Object, Property, JTextComponent)} for
+     * a {@link JTextField} where the bean property is a primitive.
      */
     @Test
     public void testEditablePrimitiveJTextField() {
@@ -116,7 +121,7 @@ public class StateBindingFunctionalTest {
 
         // Bind
         Property<TestBean, Boolean> bP = BeanProperty.create("statePrimitive");
-        Binding<TestBean, Boolean, JComponent, Boolean> binding = StateBinding.editable(bean, bP, textField);
+        Binding<TestBean, Boolean, JTextComponent, Boolean> binding = StateBinding.editable(bean, bP, textField);
         binding.bind();
 
         // Test
@@ -136,7 +141,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, textField.isEditable());
             }
         });
-        // Reverse the state via the component (binding is read only so bean should not be updated)
+        // Reverse the state via the component (binding is read only so bean
+        // should not be updated)
         textField.setEditable(false);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -144,7 +150,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, bean.isStatePrimitive());
             }
         });
-        // Set the same value on the bean property, the component will not be updated (same value means no property
+        // Set the same value on the bean property, the component will not be
+        // updated (same value means no property
         // change)
         bean.setStatePrimitive(false);
         TestUtils.invokeAndWait(new Runnable() {
@@ -167,8 +174,8 @@ public class StateBindingFunctionalTest {
     }
 
     /**
-     * Test {@link StateBinding#editable(Object, Property, JComboBox)} where the bean property is a non-primitive
-     * {@link Boolean}.
+     * Test {@link StateBinding#editable(Object, Property, JComboBox)} where the
+     * bean property is a non-primitive {@link Boolean}.
      */
     @Test
     public void testEditableJComboBox() {
@@ -178,7 +185,7 @@ public class StateBindingFunctionalTest {
 
         // Bind
         Property<TestBean, Boolean> bP = BeanProperty.create("state");
-        Binding<TestBean, Boolean, JComponent, Boolean> binding = StateBinding.editable(bean, bP, component);
+        Binding<TestBean, Boolean, JComboBox, Boolean> binding = StateBinding.editable(bean, bP, component);
         binding.bind();
 
         // Test
@@ -198,7 +205,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, component.isEditable());
             }
         });
-        // Reverse the state via the component (binding is read only so bean should not be updated)
+        // Reverse the state via the component (binding is read only so bean
+        // should not be updated)
         component.setEditable(false);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -206,7 +214,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(Boolean.TRUE, bean.getState());
             }
         });
-        // Set the same value on the bean property, the component will not be updated (same value means no property
+        // Set the same value on the bean property, the component will not be
+        // updated (same value means no property
         // change)
         bean.setState(false);
         TestUtils.invokeAndWait(new Runnable() {
@@ -231,7 +240,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(false, component.isEditable());
             }
         });
-        // Update the component with a value (binding is read only so bean should not be updated)
+        // Update the component with a value (binding is read only so bean
+        // should not be updated)
         component.setEditable(true);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -245,7 +255,8 @@ public class StateBindingFunctionalTest {
     }
 
     /**
-     * Test {@link StateBinding#editable(Object, Property, JComboBox)} where the bean property is a primitive.
+     * Test {@link StateBinding#editable(Object, Property, JComboBox)} where the
+     * bean property is a primitive.
      */
     @Test
     public void testEditablePrimitiveJComboBox() {
@@ -255,7 +266,7 @@ public class StateBindingFunctionalTest {
 
         // Bind
         Property<TestBean, Boolean> bP = BeanProperty.create("statePrimitive");
-        Binding<TestBean, Boolean, JComponent, Boolean> binding = StateBinding.editable(bean, bP, component);
+        Binding<TestBean, Boolean, JComboBox, Boolean> binding = StateBinding.editable(bean, bP, component);
         binding.bind();
 
         // Test
@@ -275,7 +286,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, component.isEditable());
             }
         });
-        // Reverse the state via the component (binding is read only so bean should not be updated)
+        // Reverse the state via the component (binding is read only so bean
+        // should not be updated)
         component.setEditable(false);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -283,7 +295,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, bean.isStatePrimitive());
             }
         });
-        // Set the same value on the bean property, the component will not be updated (same value means no property
+        // Set the same value on the bean property, the component will not be
+        // updated (same value means no property
         // change)
         bean.setStatePrimitive(false);
         TestUtils.invokeAndWait(new Runnable() {
@@ -306,8 +319,9 @@ public class StateBindingFunctionalTest {
     }
 
     /**
-     * Test {@link StateBinding#enabled(Object, Property, JComponent)} for a {@link JTextField} where the bean property
-     * is a non-primitive {@link Boolean}.
+     * Test {@link StateBinding#enabled(Object, Property, JComponent)} for a
+     * {@link JTextField} where the bean property is a non-primitive
+     * {@link Boolean}.
      */
     @Test
     public void testEnabledJTextField() {
@@ -337,7 +351,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, textField.isEnabled());
             }
         });
-        // Reverse the state via the component (binding is read only so bean should not be updated)
+        // Reverse the state via the component (binding is read only so bean
+        // should not be updated)
         textField.setEnabled(false);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -345,7 +360,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(Boolean.TRUE, bean.getState());
             }
         });
-        // Set the same value on the bean property, the component will not be updated (same value means no property
+        // Set the same value on the bean property, the component will not be
+        // updated (same value means no property
         // change)
         bean.setState(false);
         TestUtils.invokeAndWait(new Runnable() {
@@ -370,7 +386,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(false, textField.isEnabled());
             }
         });
-        // Update the component with a value (binding is read only so bean should not be updated)
+        // Update the component with a value (binding is read only so bean
+        // should not be updated)
         textField.setEnabled(true);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -384,8 +401,8 @@ public class StateBindingFunctionalTest {
     }
 
     /**
-     * Test {@link StateBinding#enabled(Object, Property, JComponent)} for a {@link JTextField} where the bean property
-     * is a primitive.
+     * Test {@link StateBinding#enabled(Object, Property, JComponent)} for a
+     * {@link JTextField} where the bean property is a primitive.
      */
     @Test
     public void testEnabledPrimitiveJTextField() {
@@ -415,7 +432,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, textField.isEnabled());
             }
         });
-        // Reverse the state via the component (binding is read only so bean should not be updated)
+        // Reverse the state via the component (binding is read only so bean
+        // should not be updated)
         textField.setEnabled(false);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -423,7 +441,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, bean.isStatePrimitive());
             }
         });
-        // Set the same value on the bean property, the component will not be updated (same value means no property
+        // Set the same value on the bean property, the component will not be
+        // updated (same value means no property
         // change)
         bean.setStatePrimitive(false);
         TestUtils.invokeAndWait(new Runnable() {
@@ -446,8 +465,9 @@ public class StateBindingFunctionalTest {
     }
 
     /**
-     * Test {@link StateBinding#visible(Object, Property, JComponent)} for a {@link JTextField} where the bean property
-     * is a non-primitive {@link Boolean}.
+     * Test {@link StateBinding#visible(Object, Property, JComponent)} for a
+     * {@link JTextField} where the bean property is a non-primitive
+     * {@link Boolean}.
      */
     @Test
     public void testVisibleJTextField() {
@@ -477,7 +497,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, textField.isVisible());
             }
         });
-        // Reverse the state via the component (binding is read only so bean should not be updated)
+        // Reverse the state via the component (binding is read only so bean
+        // should not be updated)
         textField.setVisible(false);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -485,7 +506,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(Boolean.TRUE, bean.getState());
             }
         });
-        // Set the same value on the bean property, the component will not be updated (same value means no property
+        // Set the same value on the bean property, the component will not be
+        // updated (same value means no property
         // change)
         bean.setState(false);
         TestUtils.invokeAndWait(new Runnable() {
@@ -510,7 +532,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(false, textField.isVisible());
             }
         });
-        // Update the component with a value (binding is read only so bean should not be updated)
+        // Update the component with a value (binding is read only so bean
+        // should not be updated)
         textField.setVisible(true);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -524,8 +547,8 @@ public class StateBindingFunctionalTest {
     }
 
     /**
-     * Test {@link StateBinding#visible(Object, Property, JComponent)} for a {@link JTextField} where the bean property
-     * is a primitive.
+     * Test {@link StateBinding#visible(Object, Property, JComponent)} for a
+     * {@link JTextField} where the bean property is a primitive.
      */
     @Test
     public void testVisiblePrimitiveJTextField() {
@@ -555,7 +578,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, textField.isVisible());
             }
         });
-        // Reverse the state via the component (binding is read only so bean should not be updated)
+        // Reverse the state via the component (binding is read only so bean
+        // should not be updated)
         textField.setVisible(false);
         TestUtils.invokeAndWait(new Runnable() {
             @Override
@@ -563,7 +587,8 @@ public class StateBindingFunctionalTest {
                 assertEquals(true, bean.isStatePrimitive());
             }
         });
-        // Set the same value on the bean property, the component will not be updated (same value means no property
+        // Set the same value on the bean property, the component will not be
+        // updated (same value means no property
         // change)
         bean.setStatePrimitive(false);
         TestUtils.invokeAndWait(new Runnable() {
